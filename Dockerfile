@@ -10,10 +10,17 @@ COPY . .
 WORKDIR "/src/GoTo.Service"
 RUN dotnet build "GoTo.Service.csproj" -c Release -o /app
 
+FROM node:10.15.3 AS build_client
+WORKDIR /app
+COPY GoTo.Client/ /app
+RUN npm install
+RUN npm run build
+
 FROM build AS publish
 RUN dotnet publish "GoTo.Service.csproj" -c Release -o /app
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
+COPY --from=build_client /app/dist/ wwwroot/
 ENTRYPOINT ["dotnet", "GoTo.Service.dll"]
