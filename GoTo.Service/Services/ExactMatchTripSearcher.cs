@@ -45,7 +45,8 @@ namespace GoTo.Service.Services {
             // Concat and order by duration
             return offeredTrips
                 .Concat(publicTrips)
-                .OrderBy(t => t.EstimatedDuration);
+                .OrderBy(t => t.StartTime)
+                .ThenBy(t => t.EstimatedDuration);
         }
     }
 }

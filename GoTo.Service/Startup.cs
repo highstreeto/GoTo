@@ -9,19 +9,26 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 
-namespace GoTo.Service
-{
-    internal class Startup
-    {
-        public void ConfigureServices(IServiceCollection services)
-        {
+namespace GoTo.Service {
+    internal class Startup {
+        private readonly IConfiguration config;
+
+        public Startup(IConfiguration config) {
+            this.config = config;
+        }
+
+        public void ConfigureServices(IServiceCollection services) {
+            services.AddOptions();
+
             // Register repositories
             services.AddSingleton<ITripOfferRepository, InMemoryTripOfferRepository>();
 
             // Register services
+            services.Configure<OEBBProviderOptions>(config.GetSection("oebb"));
             services.AddSingleton<IPublicTransportTripProvider, OEBBPublicTransportTripProvider>();
             services.AddSingleton<IPublicTransportTripProvider, GMapsPublicTransportTripProvider>();
 
@@ -31,8 +38,7 @@ namespace GoTo.Service
               .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddSwaggerGen(c => {
-                c.SwaggerDoc("v1", new Info
-                {
+                c.SwaggerDoc("v1", new Info {
                     Title = "GoTo API",
                     Version = "v1",
                     Description = "The GoTo REST API allows for offering trips and searching for public transport trips."
@@ -43,10 +49,8 @@ namespace GoTo.Service
             });
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
+            if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
             }
 

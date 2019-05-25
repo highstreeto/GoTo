@@ -43,6 +43,58 @@ namespace GoTo.Service.Domain {
 
         public string Operator { get; }
         public PublicTransportType Type { get; }
+
+        public static Builder NewBuilder(string @operator)
+            => new Builder(@operator);
+
+        public class Builder {
+            private DateTime startTime;
+            private Destination startLocation;
+            private DateTime endTime;
+            private Destination endLocation;
+            private string @operator;
+            private PublicTransportType type;
+
+            public Builder(string @operator) {
+                this.@operator = @operator;
+            }
+
+            public Builder SetStartTime(DateTime start) {
+                this.startTime = start;
+                return this;
+            }
+            public Builder SetStartLocation(Destination start) {
+                this.startLocation = start;
+                return this;
+            }
+
+            public Builder SetEndTime(DateTime end) {
+                this.endTime = end;
+                return this;
+            }
+            public Builder SetEndLocation(Destination end) {
+                this.endLocation = end;
+                return this;
+            }
+
+            public Builder SetOperator(string @operator) {
+                this.@operator = @operator;
+                return this;
+            }
+
+            public Builder AddType(PublicTransportType type) {
+                this.type |= type;
+                return this;
+            }
+
+            public PublicTransportTrip Build() {
+                return new PublicTransportTrip(
+                    startTime, startLocation,
+                    endTime - startTime, endLocation,
+                    @operator, type
+                );
+            }
+        }
     }
 
     [Flags]
