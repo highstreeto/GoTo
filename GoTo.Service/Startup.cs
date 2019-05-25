@@ -1,18 +1,46 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using GoTo.Service.Repositories;
+using GoTo.Service.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace GoTo.Service
 {
-    public class Startup
+    internal class Startup
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            // Register repositories
+            services.AddSingleton<ITripOfferRepository, InMemoryTripOfferRepository>();
+
+            // Register services
+            services.AddSingleton<IPublicTransportTripProvider, OEBBPublicTransportTripProvider>();
+            services.AddSingleton<IPublicTransportTripProvider, GMapsPublicTransportTripProvider>();
+
+            services.AddSingleton<ITripSearcher, ExactMatchTripSearcher>();
+
+            services.AddMvc()
+              .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddSwaggerGen(c => {
+                c.SwaggerDoc("v1", new Info
+                {
+                    Title = "GoTo API",
+                    Version = "v1",
+                    Description = "The GoTo REST API allows for offering trips and searching for public transport trips."
+                });
+
+                var xmlDocFile = Path.Combine(AppContext.BaseDirectory, "GoTo.Service.xml");
+                c.IncludeXmlComments(xmlDocFile);
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -22,8 +50,21 @@ namespace GoTo.Service
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseDefaultFiles()
-                .UseStaticFiles();
+            app.UseStaticFiles();
+
+            app.UseMvc();
+            app.UseSwagger();
+            app.UseSwaggerUI(c => {
+                c.DocumentTitle = "GoTo API";
+
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "GoTo API V1");
+            });
+
+            // Handle client routes
+            app.Run(async (context) => {
+                context.Response.ContentType = "text/html";
+                await context.Response.SendFileAsync(Path.Combine(env.WebRootPath, "index.html"));
+            });
         }
     }
 }

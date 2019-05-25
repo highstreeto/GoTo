@@ -7,10 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoTo.Lambda", "GoTo.Lambda\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoTo.Lambda.Tests", "GoTo.Lambda.Tests\GoTo.Lambda.Tests.csproj", "{9E781A4C-F4D8-4277-B661-DB30A2027BFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoTo.Service", "GoTo.Service\GoTo.Service.csproj", "{826D582E-B3F8-4799-9AD9-B63FE3F2FC1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoTo.Service", "GoTo.Service\GoTo.Service.csproj", "{826D582E-B3F8-4799-9AD9-B63FE3F2FC1B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{ACA47E37-E6A6-45EE-8FCA-1D8089A7722A}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		Dockerfile = Dockerfile
 	EndProjectSection
 EndProject

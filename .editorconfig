@@ -13,3 +13,21 @@ indent_size = 2
 [*.md]
 max_line_length = off
 trim_trailing_whitespace = false
+
+# editorconfig rules from https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference?view=vs-2017#normalize_modifiers
+[*.cs]
+# formatting conventions
+dotnet_style_require_accessibility_modifiers = for_non_interface_members: warning
+dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:suggestion
+dotnet_style_null_propagation = true:suggestion
+csharp_style_throw_expression = false
+csharp_prefer_braces = true
+csharp_new_line_before_open_brace = none
+csharp_new_line_before_else = false
+csharp_new_line_before_catch = false
+csharp_new_line_before_finally = false
+csharp_preserve_single_line_statements = false:suggestion
+
+# naming conventions
+dotnet_naming_rule.public_members_must_be_capitalized.symbols = public_symbols:error
+
