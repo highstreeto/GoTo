@@ -52,6 +52,9 @@ namespace GoTo.Service {
         public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
+                app.UseCors(cors =>
+                    cors.WithOrigins("http://localhost:4200")
+                );
             }
 
             app.UseStaticFiles();
