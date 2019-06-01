@@ -37,12 +37,17 @@ namespace GoTo.Lambda
                     var destination = destintationSlot.Value;
                     var time = DateTime.Now;
 
+                    context.Logger.LogLine($"Start search for {source} -> {destination}");
+
                     var response = new ProgressiveResponse();
                     await response.SendSpeech(Properties.Speech.SearchingForTrips);
 
                     var trips = (await searcher.SearchForTripsAsync(source, destination, time))
                         .OrderBy(t => t.StartTime)
-                        .ThenBy(t => t.Duration);
+                        .ThenBy(t => t.Duration)
+                        .ToList();
+                    context.Logger.LogLine($"Finish search for {source} -> {destination}: Found {trips.Count()}, Best: {trips.FirstOrDefault()}");
+
                     if (trips.Any()) {
                         return ResponseBuilder.TellWithCard(
                             string.Format(Properties.Speech.FoundTrips, source, destination),
@@ -50,7 +55,9 @@ namespace GoTo.Lambda
                             BuildTripsCard(trips)
                         );
                     } else {
-                        return ResponseBuilder.Tell(Properties.Speech.NoTripsFound);
+                        return ResponseBuilder.Tell(
+                            string.Format(Properties.Speech.NoTripsFound, source, destination)
+                        );
                     }
                 } else {
                     // TODO Better response for unknown intent
