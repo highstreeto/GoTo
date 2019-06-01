@@ -44,6 +44,10 @@ namespace GoTo.Service.Services {
             resultHtml.LoadHtml(await response.Content.ReadAsStringAsync());
 
             var resultTable = resultHtml.DocumentNode.SelectSingleNode("//table[@class='resultTable']");
+            if (resultTable == null) {
+                throw new InvalidOperationException("No trips could be found!");
+            }
+
             var result = new List<PublicTransportTrip>();
             foreach (var row in resultTable.SelectNodes("//tr[starts-with(@id, 'trOverview')]")) {
                 var builder = PublicTransportTrip.NewBuilder(Operator);

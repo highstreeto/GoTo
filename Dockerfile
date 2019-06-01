@@ -10,7 +10,7 @@ COPY . .
 WORKDIR "/src/GoTo.Service"
 RUN dotnet build "GoTo.Service.csproj" -c Release -o /app
 
-FROM node:10.15.3 AS build_client
+FROM node:10.16.0-alpine AS build_client
 WORKDIR /app
 COPY GoTo.Client/ /app
 RUN npm install
