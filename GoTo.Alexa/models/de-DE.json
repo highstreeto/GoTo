@@ -1,0 +1,55 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "go to",
+      "intents": [
+        {
+          "name": "AMAZON.FallbackIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        },
+        {
+          "name": "TripSearchIntent",
+          "slots": [
+            {
+              "name": "Destination",
+              "type": "AMAZON.City"
+            },
+            {
+              "name": "Source",
+              "type": "AMAZON.City"
+            }
+          ],
+          "samples": [
+            "nächste verbindung von {Source} nach {Destination}",
+            "wie könnte ich von {Source} nach {Destination} kommen",
+            "was ist die nächste verbindung von {Source} nach {Destination}",
+            "wie komme ich von {Source} nach {Destination}",
+            "was ist die nächste verbindung zu {Destination}",
+            "nächste verbindung zu {Destination}",
+            "wie könnte ich nach {Destination} kommen",
+            "wer fährt als nächster nach {Destination}",
+            "wie komme ich nach {Destination}"
+          ]
+        }
+      ],
+      "types": []
+    }
+  },
+  "version": "3"
+}
