@@ -49,7 +49,7 @@ namespace GoTo.Service.Services {
             }
 
             var result = new List<PublicTransportTrip>();
-            foreach (var row in resultTable.SelectNodes("//tr[starts-with(@id, 'trOverview')]")) {
+            foreach (var row in resultTable.SelectNodes("//tr[starts-with(@id, 'trOverview') and not(starts-with(@id, 'trOverviewHint') )]")) {
                 var builder = PublicTransportTrip.NewBuilder(Operator);
 
                 DateTime startDate = DateTime.MinValue;
