@@ -18,3 +18,4 @@ zip -r ../dist.zip *
 Pop-Location
 
 Remove-Item -Recurse dist/
+eb deploy
