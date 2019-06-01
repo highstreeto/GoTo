@@ -26,11 +26,13 @@ namespace GoTo.Lambda.Services {
             var response = await client.PostAsync($"{host}/api/trip/search",
                 new StringContent(JsonConvert.SerializeObject(searchParams), Encoding.UTF8, MediaTypeNames.Application.Json));
             if (response.IsSuccessStatusCode) {
-                var trips = JsonConvert.DeserializeObject<Trip[]>(
-                    await response.Content.ReadAsStringAsync()
-                );
+                var json = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Response success! Got: {json}");
+
+                var trips = JsonConvert.DeserializeObject<Trip[]>(json);
                 return trips;
             } else {
+                Console.WriteLine($"Response was unsuccessful! Code: {response.StatusCode}, Error: {await response.Content.ReadAsStringAsync()}");
                 // TODO Better error handling
                 return new Trip[] { };
             }
