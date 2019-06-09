@@ -6,10 +6,16 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ApiModule, Configuration, ConfigurationParameters } from 'src/api-client';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { WelcomeComponent } from './welcome/welcome.component';
+import { TripSearchComponent } from './trip-search/trip-search.component';
+import { TripAddComponent } from './trip-add/trip-add.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    WelcomeComponent,
+    TripSearchComponent,
+    TripAddComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,41 @@
+<main role="main">
+  <section class="jumbotron text-center">
+    <div class="container">
+      <h1 class="jumbotron-heading">GoTo.Client für Mitfahren und Öffis</h1>
+      <p class="lead text-muted">
+        Willkommen zu GoTo.Client! GoTo ist eine Kombination eines Alexa-Skills und einer Weboberfläche, wo Mitfahrten
+        organisiert werden können und öffentliche Verkehrsmittel genutzt werden können.
+      </p>
+      <p>
+        <a routerLink="/add-trip" class="btn btn-primary">Mitfahrten eintragen</a>
+        <a routerLink="/search-trip" class="btn btn-secondary">Nach Fahrten suchen</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="text-center">
+    <div class="container">
+      <h2>Aktuell angeboteten Fahrten</h2>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Start-Zeit</th>
+            <th scope="col">Start-Ort</th>
+            <th scope="col">Dauer</th>
+            <th scope="col">End-Ort</th>
+            <th scope="col">Benutzer</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let trip of currentTrips">
+            <td>{{ trip.starTime }}</td>
+            <td>{{ trip.startLocation }}</td>
+            <td>{{ trip.endTime }}</td>
+            <td>{{ trip.endLocation }}</td>
+            <td>{{ trip.offeredBy }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
