@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
+using Optional;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,13 +14,17 @@ namespace GoTo.Service.Controllers {
     [Route("/api/tripoffer")]
     public class TripOfferController : ControllerBase {
         private readonly ITripOfferRepository repo;
+        private readonly IDestinationRepository destRepo;
 
-        public TripOfferController(ITripOfferRepository repo) {
+        public TripOfferController(ITripOfferRepository repo, IDestinationRepository destRepo) {
             this.repo = repo;
+            this.destRepo = destRepo;
         }
 
+
+
         /// <summary>
-        /// 
+        /// Query all available trips offered by users
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -36,12 +41,17 @@ namespace GoTo.Service.Controllers {
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(typeof(TripOffer), 200)]
-        [ProducesResponseType(401)]
+        [ProducesResponseType(400)]
         [ProducesResponseType(500)]
         public IActionResult Add([FromBody] TripOffer offer) {
-            var domain = offer.ToDomain();
-            repo.Add(domain);
-            return Ok(new TripOffer(domain));
+            var domain = offer.ToDomain(destRepo);
+            return domain.Match<IActionResult>(
+                some: o => {
+                    repo.Add(o);
+                    return Ok(new TripOffer(o));
+                },
+                none: msg => BadRequest(msg)
+            );
         }
 
         public class TripOffer {
@@ -66,12 +76,21 @@ namespace GoTo.Service.Controllers {
             [Required]
             public string OfferedBy { get; set; }
 
-            public Domain.TripOffer ToDomain() {
+            public Option<Domain.TripOffer, string> ToDomain(IDestinationRepository destRepo) {
+                var start = destRepo.FindByName(StartLocation);
+                var end = destRepo.FindByName(EndLocation);
+                if (start == null)
+                    return Option.None<Domain.TripOffer, string>($"Start location '{StartLocation}' could not matched!");
+                if (end == null)
+                    return Option.None<Domain.TripOffer, string>($"End location '{EndLocation}' could not matched!");
+
                 return new Domain.TripOffer(
-                    StarTime, new Domain.Destination(StartLocation, 0, 0),
-                    EndTime - StarTime, new Domain.Destination(EndLocation, 0, 0),
+                    StarTime,
+                    destRepo.FindByName(StartLocation),
+                    EndTime - StarTime,
+                    destRepo.FindByName(EndLocation),
                     new Domain.User(null, OfferedBy)
-                );
+                ).Some<Domain.TripOffer, string>();
             }
         }
     }

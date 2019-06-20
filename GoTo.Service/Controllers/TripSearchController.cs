@@ -30,7 +30,7 @@ namespace GoTo.Service.Controllers {
         /// <param name="searchParams"></param>
         [HttpPost]
         [ProducesResponseType(typeof(IEnumerable<FoundTrip>), 200)]
-        [ProducesResponseType(401)]
+        [ProducesResponseType(400)]
         [ProducesResponseType(500)]
         public async Task<IActionResult> Search([FromBody] TripSearchParams searchParams) {
             var request = searchParams.ToService(destRepo);
