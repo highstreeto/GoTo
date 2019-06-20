@@ -19,7 +19,9 @@ namespace GoTo.Lambda
 {
     public class Function
     {
-        private static readonly ITripSearcher searcher = new TripSearcherFake();
+        private static readonly ITripSearcher searcher
+            = new TripSearcherFake();
+            //= new GoToTripSearcher(Properties.Resources.SearchService);
 
         public async Task<SkillResponse> FunctionHandler(SkillRequest input, ILambdaContext context)
         {
@@ -27,7 +29,9 @@ namespace GoTo.Lambda
             CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("de-DE");
 
             if (input.Request is LaunchRequest) {
-                return ResponseBuilder.Ask(
+                return ResponseBuilder.AskWithCard(
+                    Properties.Speech.Starter,
+                    Properties.Speech.StarterTitle,
                     Properties.Speech.Starter,
                     null
                 );
@@ -59,12 +63,16 @@ namespace GoTo.Lambda
                                 bestTrip.StartLocation, bestTrip.EndLocation,
                                 bestTrip.StartTime.ToString("HH:mm"),
                                 bestTrip.Provider),
-                            string.Format(Properties.Speech.FoundTripsTitle, source, destination),
+                            string.Format(Properties.Speech.FoundTripsTitle,
+                                bestTrip.StartLocation,
+                                bestTrip.EndLocation),
                             BuildTripsCard(trips)
                         );
                     } else {
-                        return ResponseBuilder.Tell(
-                            string.Format(Properties.Speech.NoTripsFound, source, destination)
+                        return ResponseBuilder.TellWithCard(
+                            string.Format(Properties.Speech.NoTripsFound, source, destination),
+                            string.Format(Properties.Speech.NoTripsFound, source, destination),
+                            ""
                         );
                     }
                 } else {
@@ -79,7 +87,11 @@ namespace GoTo.Lambda
         private string BuildTripsCard(IEnumerable<Trip> trips) {
             var content = new StringBuilder();
             foreach (var trip in trips) {
-                content.AppendLine($"{trip.StartLocation} ({trip.StartTime}) => {trip.EndLocation} ({trip.EndTime}) - {trip.Duration}");
+                content.AppendLine(
+                    $"Von {trip.StartLocation} ({trip.StartTime.ToString("HH:mm")})\n" +
+                    $"Nach {trip.EndLocation} ({trip.EndTime.ToString("HH:mm")})\n" +
+                    $"Dauer: {trip.Duration}");
+                content.AppendLine();
             }
             return content.ToString();
         }

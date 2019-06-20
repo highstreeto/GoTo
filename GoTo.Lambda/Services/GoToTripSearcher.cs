@@ -23,7 +23,7 @@ namespace GoTo.Lambda.Services {
                 StartTime = time
             };
 
-            var response = await client.PostAsync($"{host}/api/trip/search",
+            var response = await client.PostAsync($"{host}/api/tripsearch",
                 new StringContent(JsonConvert.SerializeObject(searchParams), Encoding.UTF8, MediaTypeNames.Application.Json));
             if (response.IsSuccessStatusCode) {
                 var json = await response.Content.ReadAsStringAsync();

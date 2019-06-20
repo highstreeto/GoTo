@@ -113,5 +113,14 @@ namespace GoTo.Lambda.Properties {
                 return ResourceManager.GetString("Starter", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GoTo - Fahren mit Öffis oder Mitfahren.
+        /// </summary>
+        internal static string StarterTitle {
+            get {
+                return ResourceManager.GetString("StarterTitle", resourceCulture);
+            }
+        }
     }
 }

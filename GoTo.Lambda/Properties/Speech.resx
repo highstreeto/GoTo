@@ -135,4 +135,7 @@
   <data name="Starter" xml:space="preserve">
     <value>Mit GoTo kannst du fragen, wie du an dein Ziel gelangst mit Öffis oder Mitfahrgelegenheiten. Zum Beispiel kannst du fragen: Wie komme ich nach Hagenberg?</value>
   </data>
+  <data name="StarterTitle" xml:space="preserve">
+    <value>GoTo - Fahren mit Öffis oder Mitfahren</value>
+  </data>
 </root>
