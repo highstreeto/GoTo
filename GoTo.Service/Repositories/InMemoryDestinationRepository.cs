@@ -10,8 +10,8 @@ namespace GoTo.Service.Repositories {
     public class InMemoryDestinationRepository : IDestinationRepository {
         private readonly List<Destination> destinations;
 
-        public InMemoryDestinationRepository(IOptionsMonitor<Settings> options) {
-            destinations = options.CurrentValue.Destinations
+        public InMemoryDestinationRepository(IOptions<Settings> options) {
+            destinations = options.Value.Destinations
                 .Select(m => new Destination(m))
                 .ToList();
         }
@@ -21,12 +21,21 @@ namespace GoTo.Service.Repositories {
 
         public Option<Destination> FindByName(string name) {
             var strComp = StringComparison.CurrentCultureIgnoreCase;
-            return Query()
+            var result = Query()
                 .Where(dst
                     => string.Equals(dst.Name, name, strComp)
                     || dst.Name.Contains(name, strComp)
-                )
-                .SingleOrNone();
+                );
+
+            if (result.Any())
+                return result.SingleOrNone();
+            else
+                return Query()
+                    .Select(d => (dest: d, levdist: Utils.LevenshteinDistance(d.Name, name)))
+                    .Where(d => d.levdist < 3)
+                    .OrderBy(d => d.levdist)
+                    .Select(d => d.dest)
+                    .FirstOrNone();
         }
 
         public Option<Destination> FindByGeo(double lat, double lon) {
