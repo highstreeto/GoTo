@@ -1,3 +1,4 @@
+using GoTo.Service.Repositories;
 using GoTo.Service.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,52 +11,62 @@ namespace GoTo.Service.Controllers {
     /// <summary>
     /// 
     /// </summary>
-    [Route("/api/trip")]
-    public class TripController : ControllerBase {
+    [Route("/api/tripsearch")]
+    public class TripSearchController : ControllerBase {
         private readonly ITripSearcher searcher;
+        private readonly IDestinationRepository destRepo;
 
-        public TripController(ITripSearcher searcher) {
+        public TripSearchController(ITripSearcher searcher,
+            IDestinationRepository destRepo) {
             this.searcher = searcher;
+            this.destRepo = destRepo;
         }
+
+
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="searchParams"></param>
         [HttpPost]
-        [Route("search")]
         [ProducesResponseType(typeof(IEnumerable<FoundTrip>), 200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> SearchAsync([FromBody] TripSearchParams searchParams) {
-            var results = await searcher.SearchAsync(searchParams.ToService());
+        public async Task<IActionResult> Search([FromBody] TripSearchParams searchParams) {
+            var request = searchParams.ToService(destRepo);
+            if (request.Start == null)
+                return BadRequest($"Start location '{searchParams.StartLocation}' could not be matched!");
+            if (request.End == null)
+                return BadRequest($"End location '{searchParams.StartLocation}' could not be matched!");
+
+            var results = await searcher.SearchAsync(request);
             return Ok(results.Select(t => new FoundTrip(t)));
         }
 
         /// <summary>
-        /// 
+        /// Parameters for a trip search
         /// </summary>
         public class TripSearchParams {
             /// <summary>
-            /// 
+            /// Name of the start location
             /// </summary>
             [Required]
             public string StartLocation { get; set; }
             /// <summary>
-            /// 
+            /// Earliest trip start time
             /// </summary>
             [Required]
             public DateTime StartTime { get; set; }
             /// <summary>
-            /// 
+            /// Name of the end location
             /// </summary>
             [Required]
             public string EndLocation { get; set; }
 
-            public Services.TripSearchRequest ToService() {
+            public Services.TripSearchRequest ToService(IDestinationRepository repo) {
                 return new TripSearchRequest(
-                    new Domain.Destination(StartLocation, 0, 0),
-                    new Domain.Destination(EndLocation, 0, 0),
+                    repo.FindByName(StartLocation),
+                    repo.FindByName(EndLocation),
                     StartTime
                 );
             }
