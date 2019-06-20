@@ -11,6 +11,10 @@ namespace GoTo.Lambda.Domain {
         public DateTime EndTime { get; set; }
         public string EndLocation { get; set; }
         public TimeSpan Duration => EndTime - StartTime;
+        /// <summary>
+        /// Name of the user (if OfferedByUser) or company (if PublicTransport)
+        /// </summary>
+        public string Provider { get; set; }
     }
 
     public enum TripKind {

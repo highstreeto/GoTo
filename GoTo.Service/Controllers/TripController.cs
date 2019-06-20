@@ -65,11 +65,13 @@ namespace GoTo.Service.Controllers {
             public FoundTrip() { }
 
             public FoundTrip(Domain.Trip trip) {
-                if (trip is Domain.PublicTransportTrip) {
+                if (trip is Domain.PublicTransportTrip ptt) {
                     Kind = FoundTripKind.PublicTransport;
+                    Provider = ptt.Operator;
                 }
-                if (trip is Domain.TripOffer) {
+                if (trip is Domain.TripOffer to) {
                     Kind = FoundTripKind.OfferedByUser;
+                    Provider = to.OfferedBy.DisplayName;
                 }
 
                 StartTime = trip.StartTime;
@@ -84,6 +86,7 @@ namespace GoTo.Service.Controllers {
             public string StartLocation { get; set; }
             public DateTime EndTime { get; set; }
             public string EndLocation { get; set; }
+            public string Provider { get; set; }
         }
 
         public enum FoundTripKind {

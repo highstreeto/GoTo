@@ -18,7 +18,7 @@ namespace GoTo.Lambda
 {
     public class Function
     {
-        private static readonly ITripSearcher searcher = new GoToTripSearcher(Properties.Resources.SearchService);
+        private static readonly ITripSearcher searcher = new TripSearcherFake();
 
         public async Task<SkillResponse> FunctionHandler(SkillRequest input, ILambdaContext context)
         {
@@ -49,8 +49,13 @@ namespace GoTo.Lambda
                     context.Logger.LogLine($"Finish search for {source} -> {destination}: Found {trips.Count()}, Best: {trips.FirstOrDefault()}");
 
                     if (trips.Any()) {
+                        var bestTrip = trips.First();
                         return ResponseBuilder.TellWithCard(
-                            string.Format(Properties.Speech.FoundTrips, source, destination),
+                            string.Format(Properties.Speech.FoundBestTrip,
+                                source, destination,
+                                bestTrip.StartTime,
+                                bestTrip.Kind,
+                                bestTrip.Provider),
                             string.Format(Properties.Speech.FoundTripsTitle, source, destination),
                             BuildTripsCard(trips)
                         );

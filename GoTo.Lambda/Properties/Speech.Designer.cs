@@ -61,11 +61,11 @@ namespace GoTo.Lambda.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hier die Verbindungen von {0} nach {1}..
+        ///   Looks up a localized string similar to Die nächste Verbindung von {0} nach {1} ist um {2} mit {3}.
         /// </summary>
-        internal static string FoundTrips {
+        internal static string FoundBestTrip {
             get {
-                return ResourceManager.GetString("FoundTrips", resourceCulture);
+                return ResourceManager.GetString("FoundBestTrip", resourceCulture);
             }
         }
         

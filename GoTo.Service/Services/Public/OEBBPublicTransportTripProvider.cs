@@ -1,12 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using GoTo.Service.Domain;
 using HtmlAgilityPack;
 using Microsoft.Extensions.Options;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Net.Http;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
@@ -66,8 +66,8 @@ namespace GoTo.Service.Services {
                             builder.SetEndLocation(new Destination(endStop, 0, 0));
                             break;
                         case "hafasOVDate":
-                            startDate = DateTime.Parse(column.InnerText);
-                            endDate = startDate; // TODO Could over 2 days
+                            startDate = DateTime.ParseExact(column.InnerText, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+                            endDate = startDate; // TODO Could go over 2 days
                             break;
                         case "hafasOVTime":
                             var planned = column.SelectSingleNode("div/div[@class='planed']").InnerText;
@@ -97,7 +97,7 @@ namespace GoTo.Service.Services {
             return result;
         }
 
-        string TrimHtmlWhitespaces(string str) {
+        private string TrimHtmlWhitespaces(string str) {
             str = str.Replace("&nbsp;", " ");
             return str.Trim();
         }

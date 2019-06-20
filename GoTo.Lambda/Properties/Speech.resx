@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="FoundTrips" xml:space="preserve">
-    <value>Hier die Verbindungen von {0} nach {1}.</value>
+  <data name="FoundBestTrip" xml:space="preserve">
+    <value>Die nächste Verbindung von {0} nach {1} ist um {2} mit {3}</value>
   </data>
   <data name="FoundTripsTitle" xml:space="preserve">
     <value>Verbindungen von {0} nach {1}</value>
