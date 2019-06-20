@@ -10,6 +10,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using System.Globalization;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
@@ -22,6 +23,9 @@ namespace GoTo.Lambda
 
         public async Task<SkillResponse> FunctionHandler(SkillRequest input, ILambdaContext context)
         {
+            // Skill currently only in German so set culture statical
+            CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("de-DE");
+
             if (input.Request is LaunchRequest) {
                 return ResponseBuilder.Ask(
                     Properties.Speech.Starter,
@@ -54,7 +58,6 @@ namespace GoTo.Lambda
                             string.Format(Properties.Speech.FoundBestTrip,
                                 source, destination,
                                 bestTrip.StartTime,
-                                bestTrip.Kind,
                                 bestTrip.Provider),
                             string.Format(Properties.Speech.FoundTripsTitle, source, destination),
                             BuildTripsCard(trips)
