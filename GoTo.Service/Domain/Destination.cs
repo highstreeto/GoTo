@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 namespace GoTo.Service.Domain {
     [DebuggerDisplay("Destination '{Name}'")]
     public class Destination : IEquatable<Destination> {
+        public Destination(Memento memento)
+            : this(memento.Name, memento.Lat, memento.Lon) { }
+
         public Destination(string name, double latitude, double longitude) {
             Name = name;
             Latitude = latitude;
@@ -50,6 +53,12 @@ namespace GoTo.Service.Domain {
         public override string ToString() {
             // TODO Proper display of long. and lat.
             return $"Destination '{Name}' at {Longitude} N {Latitude} E";
+        }
+
+        public class Memento {
+            public string Name { get; set; }
+            public double Lat { get; set; }
+            public double Lon { get; set; }
         }
     }
 }

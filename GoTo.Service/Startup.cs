@@ -26,7 +26,8 @@ namespace GoTo.Service {
 
             // Register repositories
             services.AddSingleton<ITripOfferRepository, InMemoryTripOfferRepository>();
-            services.AddSingleton<IDestinationRepository, InMemoryDestinationRepository>();
+            services.AddSingleton<IDestinationRepository, InMemoryDestinationRepository>()
+                .Configure<InMemoryDestinationRepository.Settings>(config.GetSection("geo"));
             services.AddSingleton<IUserRepository, InMemoryUserRepository>();
 
             // Register services

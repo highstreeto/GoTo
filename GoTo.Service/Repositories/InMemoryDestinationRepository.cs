@@ -3,27 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GoTo.Service.Domain;
+using Microsoft.Extensions.Options;
 
 namespace GoTo.Service.Repositories {
     public class InMemoryDestinationRepository : IDestinationRepository {
         private readonly List<Destination> destinations;
 
-        public InMemoryDestinationRepository() {
-            destinations = new List<Destination>() {
-                new Destination("Waidhofen an der Ybbs", 47.960310, 14.772283),
-                new Destination("Linz/Donau", 48.305598, 14.286601),
-                new Destination("Hagenberg im Mühlkreis", 48.367126, 14.516660),
-                new Destination("Wien", 48.208344, 16.371313),
-            };
+        public InMemoryDestinationRepository(IOptionsMonitor<Settings> options) {
+            destinations = options.CurrentValue.Destinations
+                .Select(m => new Destination(m))
+                .ToList();
         }
 
         public IEnumerable<Destination> Query()
             => destinations;
 
         public Destination FindByName(string name) {
-            // TODO Implement fuzzy search
+            var strComp = StringComparison.CurrentCultureIgnoreCase;
             return Query()
-                .Where(dst => dst.Name == name)
+                .Where(dst
+                    => string.Equals(dst.Name, name, strComp)
+                    || dst.Name.Contains(name, strComp)
+                )
                 .SingleOrDefault();
         }
 
@@ -37,6 +38,10 @@ namespace GoTo.Service.Repositories {
 
         public void Add(Destination destination) {
             destinations.Add(destination);
+        }
+
+        public class Settings {
+            public Destination.Memento[] Destinations { get; set; }
         }
     }
 }
