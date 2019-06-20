@@ -60,8 +60,8 @@ namespace GoTo.Service.Services {
                 foreach (var column in row.SelectNodes("td")) {
                     switch (column.Attributes["headers"]?.Value) {
                         case "hafasOVStop":
-                            var startStop = TrimHtmlWhitespaces(column.FirstChild.InnerText);
-                            var endStop = TrimHtmlWhitespaces(column.LastChild.InnerText);
+                            var startStop = GetTextContent(column.FirstChild);
+                            var endStop = GetTextContent(column.LastChild);
                             builder.SetStartLocation(new Destination(startStop, 0, 0));
                             builder.SetEndLocation(new Destination(endStop, 0, 0));
                             break;
@@ -95,11 +95,12 @@ namespace GoTo.Service.Services {
             }
 
             return result;
-        }
 
-        private string TrimHtmlWhitespaces(string str) {
-            str = str.Replace("&nbsp;", " ");
-            return str.Trim();
+            string GetTextContent(HtmlNode node) {
+                string text = node.InnerText;
+                text = HtmlEntity.DeEntitize(text);
+                return text.Trim();
+            }
         }
     }
 
