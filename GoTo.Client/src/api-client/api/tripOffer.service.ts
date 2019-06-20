@@ -16,7 +16,7 @@ import { HttpClient, HttpHeaders, HttpParams,
          HttpResponse, HttpEvent }                           from '@angular/common/http';
 import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
-import { Observable }                                        from 'rxjs';
+import { Observable }                                        from 'rxjs/Observable';
 
 import { TripOffer } from '../model/tripOffer';
 
@@ -105,7 +105,7 @@ export class TripOfferService {
     }
 
     /**
-     * 
+     * Query all available trips offered by users
      * 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.

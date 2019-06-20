@@ -12,19 +12,19 @@
 
 
 /**
- * 
+ * Parameters for a trip search
  */
 export interface TripSearchParams { 
     /**
-     * 
+     * Name of the start location
      */
     startLocation: string;
     /**
-     * 
+     * Earliest trip start time
      */
     startTime: Date;
     /**
-     * 
+     * Name of the end location
      */
     endLocation: string;
 }

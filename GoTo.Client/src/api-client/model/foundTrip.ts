@@ -17,6 +17,7 @@ export interface FoundTrip {
     startLocation?: string;
     endTime?: Date;
     endLocation?: string;
+    provider?: string;
 }
 export namespace FoundTrip {
     export type KindEnum = 0 | 1;

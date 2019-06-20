@@ -16,7 +16,7 @@ import { HttpClient, HttpHeaders, HttpParams,
          HttpResponse, HttpEvent }                           from '@angular/common/http';
 import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
-import { Observable }                                        from 'rxjs';
+import { Observable }                                        from 'rxjs/Observable';
 
 import { FoundTrip } from '../model/foundTrip';
 import { TripSearchParams } from '../model/tripSearchParams';
@@ -26,7 +26,7 @@ import { Configuration }                                     from '../configurat
 
 
 @Injectable()
-export class TripService {
+export class TripSearchService {
 
     protected basePath = 'https://localhost';
     public defaultHeaders = new HttpHeaders();
@@ -64,10 +64,10 @@ export class TripService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public searchAsync(searchParams?: TripSearchParams, observe?: 'body', reportProgress?: boolean): Observable<Array<FoundTrip>>;
-    public searchAsync(searchParams?: TripSearchParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<FoundTrip>>>;
-    public searchAsync(searchParams?: TripSearchParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<FoundTrip>>>;
-    public searchAsync(searchParams?: TripSearchParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public search(searchParams?: TripSearchParams, observe?: 'body', reportProgress?: boolean): Observable<Array<FoundTrip>>;
+    public search(searchParams?: TripSearchParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<FoundTrip>>>;
+    public search(searchParams?: TripSearchParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<FoundTrip>>>;
+    public search(searchParams?: TripSearchParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -94,7 +94,7 @@ export class TripService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.post<Array<FoundTrip>>(`${this.basePath}/api/trip/search`,
+        return this.httpClient.post<Array<FoundTrip>>(`${this.basePath}/api/tripsearch`,
             searchParams,
             {
                 withCredentials: this.configuration.withCredentials,

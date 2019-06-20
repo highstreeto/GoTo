@@ -1,5 +1,5 @@
-export * from './trip.service';
-import { TripService } from './trip.service';
 export * from './tripOffer.service';
 import { TripOfferService } from './tripOffer.service';
-export const APIS = [TripService, TripOfferService];
+export * from './tripSearch.service';
+import { TripSearchService } from './tripSearch.service';
+export const APIS = [TripOfferService, TripSearchService];

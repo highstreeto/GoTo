@@ -3,16 +3,16 @@ import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
 
-import { TripService } from './api/trip.service';
 import { TripOfferService } from './api/tripOffer.service';
+import { TripSearchService } from './api/tripSearch.service';
 
 @NgModule({
   imports:      [],
   declarations: [],
   exports:      [],
   providers: [
-    TripService,
-    TripOfferService ]
+    TripOfferService,
+    TripSearchService ]
 })
 export class ApiModule {
     public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders {
