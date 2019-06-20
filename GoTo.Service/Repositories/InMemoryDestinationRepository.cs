@@ -32,6 +32,7 @@ namespace GoTo.Service.Repositories {
         public Option<Destination> FindByGeo(double lat, double lon) {
             return Query()
                 .Select(d => (dest: d, dist: d.DistanceTo(lat, lon)))
+                .Where(d => d.dist < 100)
                 .OrderBy(d => d.dist)
                 .Select(d => d.dest)
                 .FirstOrNone();

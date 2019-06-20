@@ -75,20 +75,17 @@ namespace GoTo.Service.Controllers {
             public string OfferedBy { get; set; }
 
             public Option<Domain.TripOffer, string> ToDomain(IDestinationRepository destRepo) {
-                var start = destRepo.FindByName(StartLocation);
-                var end = destRepo.FindByName(EndLocation);
-                if (start == null)
-                    return Option.None<Domain.TripOffer, string>($"Start location '{StartLocation}' could not matched!");
-                if (end == null)
-                    return Option.None<Domain.TripOffer, string>($"End location '{EndLocation}' could not matched!");
-
-                return new Domain.TripOffer(
-                    StarTime,
-                    destRepo.FindByName(StartLocation),
-                    EndTime - StarTime,
-                    destRepo.FindByName(EndLocation),
-                    new Domain.User(null, OfferedBy)
-                ).Some<Domain.TripOffer, string>();
+                return
+                    destRepo.FindByName(StartLocation)
+                    .WithException($"Start location '{StartLocation}' could not matched!")
+                    .FlatMap(start =>
+                        destRepo.FindByName(EndLocation)
+                        .WithException($"End location '{EndLocation}' could not matched!")
+                        .Map(end => new Domain.TripOffer(StarTime, start,
+                            EndTime - StarTime, end,
+                            new Domain.User(null, OfferedBy))
+                        )
+                );
             }
         }
     }

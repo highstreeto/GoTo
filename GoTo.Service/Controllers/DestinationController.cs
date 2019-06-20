@@ -21,55 +21,39 @@ namespace GoTo.Service.Controllers {
         /// <summary>
         /// Query all available destinations
         /// </summary>
+        /// <param name="name">Name of the searched destination (fuzzy match)</param>
+        /// <param name="lat">Latitude of the searched destination (finds nearest)</param>
+        /// <param name="lon">Longitude of the searched destination (finds nearest)</param>
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Destination>), 200)]
         [ProducesResponseType(500)]
-        public IActionResult Query() {
-            return Ok(repo.Query().Select(o => new Destination(o)));
-        }
-
-        /// <summary>
-        /// Query all available destinations
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<Destination>), 200)]
-        [ProducesResponseType(500)]
-        public IActionResult Find([FromBody] DestinationSearchParams search) {
-            var result = Option.None<Domain.Destination, string>("");
-            switch (search.Mode) {
-                case SearchMode.Name:
-                    result = repo.FindByName(search.Name)
-                        .WithException($"Location name '{search.Name}' not matched!");
-                    break;
-                case SearchMode.Geo:
-                    result = repo.FindByGeo(search.Latitude, search.Longitude)
-                        .WithException($"Location geo {search.Latitude}, {search.Longitude} not matched!");
-                    break;
-                default:
-                    return BadRequest("Unknown search mode!");
+        public IActionResult Query(
+                [FromQuery]string name,
+                [FromQuery]double? lat,
+                [FromQuery]double? lon
+            ) {
+            if (!string.IsNullOrWhiteSpace(name)) {
+                return repo.FindByName(name)
+                    .WithException($"Location name '{name}' not matched!")
+                    .Map(domain => new Destination(domain))
+                    .Match<IActionResult>(
+                        some: dst => Ok(new[] { dst }),
+                        none: msg => NotFound(msg)
+                    );
+            } else if (lat.HasValue && lon.HasValue) {
+                return repo.FindByGeo(lat.Value, lon.Value)
+                    .WithException($"Location geo '{lat}, {lon}' not matched!")
+                    .Map(domain => new Destination(domain))
+                    .Match<IActionResult>(
+                        some: dst => Ok(new[] { dst }),
+                        none: msg => NotFound(msg)
+                    );
+            } else {
+                if ((lat.HasValue && !lon.HasValue) || (!lat.HasValue && lon.HasValue))
+                    return BadRequest("Both latitude and longitude must be specified!");
+                return Ok(repo.Query().Select(o => new Destination(o)));
             }
-
-            return result
-                .Map(domain => new Destination(domain))
-                .Match<IActionResult>(
-                    some: dst => Ok(dst),
-                    none: msg => NotFound(msg)
-                );
-        }
-
-        public class DestinationSearchParams {
-            [Required]
-            public SearchMode Mode { get; set; }
-            public string Name { get; set; }
-            public double Latitude { get; set; }
-            public double Longitude { get; set; }
-        }
-
-        public enum SearchMode {
-            Name,
-            Geo
         }
 
         public class Destination {

@@ -49,6 +49,7 @@ namespace GoTo.Service {
 
                 var xmlDocFile = Path.Combine(AppContext.BaseDirectory, "GoTo.Service.xml");
                 c.IncludeXmlComments(xmlDocFile);
+                c.DescribeAllEnumsAsStrings();
             });
 
             services.AddCors(options => {

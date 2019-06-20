@@ -65,8 +65,9 @@ namespace GoTo.Service.Controllers {
 
             public Services.TripSearchRequest ToService(IDestinationRepository repo) {
                 return new TripSearchRequest(
-                    repo.FindByName(StartLocation),
-                    repo.FindByName(EndLocation),
+                    // TODO Refactor
+                    repo.FindByName(StartLocation).ValueOr((Domain.Destination)null),
+                    repo.FindByName(EndLocation).ValueOr((Domain.Destination)null),
                     StartTime
                 );
             }
