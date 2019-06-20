@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GoTo.Service.Domain {
     [DebuggerDisplay("Destination '{Name}'")]
-    public class Destination : IEquatable<Destination> {
+    public class Destination {
         public Destination(Memento memento)
             : this(memento.Name, memento.Lat, memento.Lon) { }
 
@@ -22,21 +22,6 @@ namespace GoTo.Service.Domain {
 
         public double Latitude { get; }
         public double Longitude { get; }
-
-        public override int GetHashCode() {
-            return Name.GetHashCode();
-        }
-
-        public override bool Equals(object obj) {
-            return Equals(obj as Destination);
-        }
-
-        public bool Equals(Destination other) {
-            return other != null &&
-                   Name == other.Name &&
-                   Latitude == other.Latitude &&
-                   Longitude == other.Longitude;
-        }
 
         public double DistanceTo(Destination other)
             => DistanceTo(other.Latitude, other.Longitude);
