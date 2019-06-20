@@ -56,7 +56,7 @@ namespace GoTo.Lambda
                         var bestTrip = trips.First();
                         return ResponseBuilder.TellWithCard(
                             string.Format(Properties.Speech.FoundBestTrip,
-                                source, destination,
+                                bestTrip.StartTime, bestTrip.EndLocation,
                                 bestTrip.StartTime.ToString("HH:mm"),
                                 bestTrip.Provider),
                             string.Format(Properties.Speech.FoundTripsTitle, source, destination),
