@@ -35,6 +35,18 @@ namespace GoTo.Service.Domain {
                    Longitude == other.Longitude;
         }
 
+        public double DistanceTo(Destination other)
+            => DistanceTo(other.Latitude, other.Longitude);
+
+        public double DistanceTo(double lat, double lon) {
+            var src = new Geo.Coordinate(Latitude, Longitude);
+            var dest = new Geo.Coordinate(lat, lon);
+            var path = new Geo.Geometries.LineString(src, dest);
+            return path.GetLength()
+                .ConvertTo(Geo.Measure.DistanceUnit.Km)
+                .Value;
+        }
+
         public override string ToString() {
             // TODO Proper display of long. and lat.
             return $"Destination '{Name}' at {Longitude} N {Latitude} E";
