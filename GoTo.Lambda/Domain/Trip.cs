@@ -15,6 +15,10 @@ namespace GoTo.Lambda.Domain {
         /// Name of the user (if OfferedByUser) or company (if PublicTransport)
         /// </summary>
         public string Provider { get; set; }
+
+        public override string ToString() {
+            return $"{StartLocation} ({StartTime}) -> {EndLocation} ({EndTime}) with {Provider}";
+        }
     }
 
     public enum TripKind {
