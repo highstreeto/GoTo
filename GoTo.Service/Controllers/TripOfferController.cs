@@ -21,8 +21,6 @@ namespace GoTo.Service.Controllers {
             this.destRepo = destRepo;
         }
 
-
-
         /// <summary>
         /// Query all available trips offered by users
         /// </summary>

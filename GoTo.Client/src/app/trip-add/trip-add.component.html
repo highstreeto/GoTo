@@ -1,3 +1,87 @@
-<p>
-  trip-add works!
-</p>
+<div class="container">
+  <h2>Neue Fahrt eintragen</h2>
+  <form [formGroup]="tripForm" (ngSubmit)="onSubmit()">
+    <div class="form-row">
+      <div class="form-group col-md">
+        <label for="startLoc">Startort</label>
+        <input type="text" class="form-control" id="startLoc" formControlName="startLoc"
+          placeholder="Startort eingeben z.B. Waidhofen" required>
+        <small id="startLocHelp" class="form-text text-muted"></small>
+        <div *ngIf="startLoc.invalid && (startLoc.dirty || startLoc.touched)" class="text-danger small">
+          <div *ngIf="startLoc.errors.required">
+            Startort ist erforderlich
+          </div>
+          <div *ngIf="startLoc.errors.minlength">
+            Startort muss mind. 3 Zeichen lang sein
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group col-md">
+        <label for="startTime">Startzeitpunkt</label>
+        <input type="datetime-local" class="form-control" id="startTime" formControlName="startTime"
+          placeholder="Startzeitpunkt eingeben" required>
+        <small id="startTimeHelp" class="form-text text-muted"></small>
+        <div *ngIf="startTime.invalid && (startTime.dirty || startTime.touched)" class="text-danger small">
+          <div *ngIf="startTime.errors.required">
+            Startzeitpunkt ist erforderlich
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md">
+        <label for="endLoc">Zielort</label>
+        <input type="text" class="form-control" id="endLoc" formControlName="endLoc"
+          placeholder="Zielort eingeben z.B. Linz" required>
+        <small id="endLocHelp" class="form-text text-muted"></small>
+        <div *ngIf="endLoc.invalid && (endLoc.dirty || endLoc.touched)" class="text-danger small">
+          <div *ngIf="endLoc.errors.required">
+            Zielort ist erforderlich
+          </div>
+          <div *ngIf="endLoc.errors.minlength">
+            Zielort muss mind. 3 Zeichen lang sein
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group col-md">
+        <label for="endTime">Zielzeitpunkt</label>
+        <input type="datetime-local" class="form-control" id="endTime" formControlName="endTime"
+          placeholder="Zielzeitpunkt eingeben" required>
+        <small id="endTimeHelp" class="form-text text-muted"></small>
+        <div *ngIf="endTime.invalid && (endTime.dirty || endTime.touched)" class="text-danger small">
+          <div *ngIf="endTime.errors.required">
+            Zielzeitpunkt ist erforderlich
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="user">Benutzer</label>
+      <input type="text" class="form-control" id="user" formControlName="user" placeholder="Benutzer eingeben z.B. Max"
+        required>
+      <small id="userHelp" class="form-text text-muted"></small>
+      <div *ngIf="user.invalid && (user.dirty || user.touched)" class="text-danger small">
+        <div *ngIf="user.errors.required">
+          Benutzer ist erforderlich
+        </div>
+        <div *ngIf="user.errors.minlength">
+          Benutzer muss mind. 3 Zeichen lang sein
+        </div>
+      </div>
+    </div>
+
+    <button [disabled]="!tripForm.valid || submitting" type="submit" class="btn btn-primary">
+      <div *ngIf="submitting" class="spinner-border spinner-border-sm" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      Eintragen
+    </button>
+    <div class="text-danger small">
+      {{ serverError }}
+    </div>
+  </form>
+</div>

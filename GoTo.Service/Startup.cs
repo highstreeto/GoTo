@@ -50,16 +50,23 @@ namespace GoTo.Service {
                 var xmlDocFile = Path.Combine(AppContext.BaseDirectory, "GoTo.Service.xml");
                 c.IncludeXmlComments(xmlDocFile);
             });
+
+            services.AddCors(options => {
+                options.AddDefaultPolicy(
+                    builder => {
+                        builder.WithOrigins("http://localhost:4200")
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+                    });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
-                app.UseCors(cors =>
-                    cors.WithOrigins("http://localhost:4200")
-                );
             }
 
+            app.UseCors();
             app.UseStaticFiles();
 
             app.UseMvc();

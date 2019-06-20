@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { ApiModule, Configuration, ConfigurationParameters } from 'src/api-client';
 import { AppRoutingModule } from './app-routing.module';
@@ -21,6 +22,7 @@ import { TripAddComponent } from './trip-add/trip-add.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    ReactiveFormsModule,
     NgbModule,
     ApiModule.forRoot(apiConfigFactory)
   ],
