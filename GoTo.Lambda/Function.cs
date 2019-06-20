@@ -90,7 +90,7 @@ namespace GoTo.Lambda
                 content.AppendLine(
                     $"Von {trip.StartLocation} ({trip.StartTime.ToString("HH:mm")})\n" +
                     $"Nach {trip.EndLocation} ({trip.EndTime.ToString("HH:mm")})\n" +
-                    $"Dauer: {trip.Duration.TotalHours:F2} h");
+                    $"Dauer: {trip.Duration.TotalHours:F2} h / Mit: {trip.Provider}");
                 content.AppendLine("-------------");
             }
             return content.ToString();
