@@ -18,7 +18,7 @@ namespace GoTo.Lambda.Services {
                 },
                 new Trip() {
                     StartLocation = "Hagenberg im Mühlkreis",
-                    StartTime = time.AddHours(0.75),
+                    StartTime = time.AddHours(0.25),
                     EndLocation = "Linz/Donau",
                     EndTime = time.AddHours(1.25),
                     Kind = TripKind.OfferedByUser,
