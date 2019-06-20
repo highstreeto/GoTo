@@ -20,8 +20,8 @@ namespace GoTo.Lambda
     public class Function
     {
         private static readonly ITripSearcher searcher
-            = new TripSearcherFake();
-            //= new GoToTripSearcher(Properties.Resources.SearchService);
+            //= new TripSearcherFake();
+            = new GoToTripSearcher(Properties.Resources.SearchService);
 
         public async Task<SkillResponse> FunctionHandler(SkillRequest input, ILambdaContext context)
         {

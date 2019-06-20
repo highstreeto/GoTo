@@ -116,7 +116,7 @@ namespace GoTo.Lambda.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to Beispielfragen:
-        ///Wie kome ich von Hagenberg nach Linz?
+        ///Wie komme ich von Hagenberg nach Linz?
         ///Nächste Verbindung von Wien nach Linz?.
         /// </summary>
         internal static string StarterContent {
