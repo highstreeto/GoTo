@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace GoTo.Service.Repositories {
     internal class InMemoryTripOfferRepository : ITripOfferRepository {
-        private readonly List<TripOffer> offers = new List<TripOffer>();
+        private readonly List<TripOffer> offers;
+
+        public InMemoryTripOfferRepository() {
+            offers = new List<TripOffer>();
+        }
 
         public IEnumerable<TripOffer> Query()
             => offers;

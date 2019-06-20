@@ -26,10 +26,12 @@ namespace GoTo.Service {
 
             // Register repositories
             services.AddSingleton<ITripOfferRepository, InMemoryTripOfferRepository>();
+            services.AddSingleton<IDestinationRepository, InMemoryDestinationRepository>();
+            services.AddSingleton<IUserRepository, InMemoryUserRepository>();
 
             // Register services
-            services.Configure<OEBBProviderOptions>(config.GetSection("oebb"));
-            services.AddSingleton<IPublicTransportTripProvider, OEBBPublicTransportTripProvider>();
+            services.AddSingleton<IPublicTransportTripProvider, OEBBPublicTransportTripProvider>()
+                .Configure<OEBBProviderOptions>(config.GetSection("oebb"));
             services.AddSingleton<IPublicTransportTripProvider, GMapsPublicTransportTripProvider>();
 
             services.AddSingleton<ITripSearcher, ExactMatchTripSearcher>();
