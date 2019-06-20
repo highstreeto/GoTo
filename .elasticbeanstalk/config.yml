@@ -1,0 +1,20 @@
+branch-defaults:
+  master:
+    environment: GoToService-dev
+    group_suffix: null
+deploy:
+  artifact: dist.zip
+global:
+  application_name: GoTo.Service
+  branch: null
+  default_ec2_keyname: null
+  default_platform: Docker 18.06.1-ce
+  default_region: eu-west-1
+  include_git_submodules: true
+  instance_profile: null
+  platform_name: null
+  platform_version: null
+  profile: eb-cli
+  repository: null
+  sc: git
+  workspace_type: Application

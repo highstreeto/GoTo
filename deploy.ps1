@@ -1,3 +1,5 @@
+scoop install zip
+
 if (Test-Path dist.zip) { Remove-Item dist.zip }
 
 New-Item -ItemType Directory dist/
