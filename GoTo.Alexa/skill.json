@@ -11,7 +11,7 @@
     "manifestVersion": "1.0",
     "permissions": [
       {
-        "name": "alexa:devices:all:address:country_and_postal_code:read"
+        "name": "alexa::devices:all:geolocation:read"
       }
     ],
     "publishingInformation": {
