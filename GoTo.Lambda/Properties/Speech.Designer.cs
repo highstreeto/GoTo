@@ -115,6 +115,17 @@ namespace GoTo.Lambda.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Beispielfragen:
+        ///Wie kome ich von Hagenberg nach Linz?
+        ///Nächste Verbindung von Wien nach Linz?.
+        /// </summary>
+        internal static string StarterContent {
+            get {
+                return ResourceManager.GetString("StarterContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GoTo - Fahren mit Öffis oder Mitfahren.
         /// </summary>
         internal static string StarterTitle {

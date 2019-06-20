@@ -32,7 +32,7 @@ namespace GoTo.Lambda
                 return ResponseBuilder.AskWithCard(
                     Properties.Speech.Starter,
                     Properties.Speech.StarterTitle,
-                    Properties.Speech.Starter,
+                    Properties.Speech.StarterContent,
                     null
                 );
             } else if (input.Request is IntentRequest intentRequest) {
@@ -90,8 +90,8 @@ namespace GoTo.Lambda
                 content.AppendLine(
                     $"Von {trip.StartLocation} ({trip.StartTime.ToString("HH:mm")})\n" +
                     $"Nach {trip.EndLocation} ({trip.EndTime.ToString("HH:mm")})\n" +
-                    $"Dauer: {trip.Duration}");
-                content.AppendLine();
+                    $"Dauer: {trip.Duration.TotalHours:F2} h");
+                content.AppendLine("-------------");
             }
             return content.ToString();
         }
