@@ -9,7 +9,7 @@ dotnet publish GoTo.Service -o ../dist/app
 
 Push-Location GoTo.Client
 
-npm run build
+ng build --prod
 Copy-Item -Force dist/* ../dist/app/wwwroot/
 
 Pop-Location
@@ -20,4 +20,4 @@ zip -r ../dist.zip *
 Pop-Location
 
 Remove-Item -Recurse dist/
-eb create
+eb deploy
