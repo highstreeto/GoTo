@@ -10,12 +10,14 @@ namespace GoTo.Service.Tests {
 
         [TestMethod]
         public void TestConversion() {
-            var london = DateTimeZoneProviders.Tzdb["Europe/London"];
+            var london = DateTimeZoneProviders.Tzdb["Europe/Vienna"];
             var instant = SystemClock.Instance.GetCurrentInstant();
 
+            var str3 = instant.ToDateTimeOffset().ToLocalTime().ToString();
+
             var time = instant.InZone(london);
-            var str = time.ToInstant().ToString();
-            var time2 = DateTime.Parse(str);
+            var str = time.ToDateTimeOffset().ToString();
+            var time2 = DateTimeOffset.Parse(str);
         }
     }
 }

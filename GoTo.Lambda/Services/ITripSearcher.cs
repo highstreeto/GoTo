@@ -11,6 +11,6 @@ namespace GoTo.Lambda.Services {
 
         Task<IEnumerable<Destination>> FindDestinationByGeo(double lat, double lon);
 
-        Task<IEnumerable<Trip>> SearchForTripsAsync(string start, string end, Instant time);
+        Task<IEnumerable<Trip>> SearchForTripsAsync(string start, string end, DateTime time);
     }
 }

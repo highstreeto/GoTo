@@ -55,12 +55,12 @@ namespace GoTo.Lambda.Services {
             }
         }
 
-        public async Task<IEnumerable<Trip>> SearchForTripsAsync(string start, string end, Instant time) {
+        public async Task<IEnumerable<Trip>> SearchForTripsAsync(string start, string end, DateTime time) {
             var client = new HttpClient();
             var searchParams = new TripSearchParams() {
                 StartLocation = start,
                 EndLocation = end,
-                StartTime = time.ToString()
+                StartTime = time
             };
 
             var request = JsonConvert.SerializeObject(searchParams);
@@ -84,7 +84,7 @@ namespace GoTo.Lambda.Services {
 
     public class TripSearchParams {
         public string StartLocation { get; set; }
-        public string StartTime { get; set; }
+        public DateTime StartTime { get; set; }
         public string EndLocation { get; set; }
     }
 }

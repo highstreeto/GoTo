@@ -244,10 +244,11 @@ namespace GoTo.Lambda {
             // get correct time for user's timezone
             var instant = SystemClock.Instance.GetCurrentInstant();
             var timezone = await settingsClient.TimeZone();
-            var london = DateTimeZoneProviders.Tzdb[timezone];
-            var time = instant.InZone(london);
+            var zone = DateTimeZoneProviders.Tzdb[timezone];
+            var time = instant.InZone(zone)
+                .ToDateTimeUnspecified();
 
-            var trips = (await searcher.SearchForTripsAsync(start.Name, end.Name, time.ToInstant()))
+            var trips = (await searcher.SearchForTripsAsync(start.Name, end.Name, time))
                 .OrderBy(t => t.StartTime)
                 .ThenBy(t => t.Duration)
                 .ToList();
