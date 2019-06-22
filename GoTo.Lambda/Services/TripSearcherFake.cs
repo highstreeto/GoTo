@@ -56,7 +56,9 @@ namespace GoTo.Lambda.Services {
         }
 
         public Task<IEnumerable<Destination>> FindDestinationByGeo(double lat, double lon) {
-            throw new NotImplementedException();
+            return Task.FromResult<IEnumerable<Destination>>(
+                new[] { destinations.First() }
+            );
         }
 
         public Task<IEnumerable<Trip>> SearchForTripsAsync(string start, string end, DateTime time) {

@@ -19,23 +19,26 @@ namespace GoTo.Service.Repositories {
         public IEnumerable<Destination> Query()
             => destinations;
 
-        public Option<Destination> FindByName(string name) {
+        public IEnumerable<Destination> FindByName(string name) {
             var strComp = StringComparison.CurrentCultureIgnoreCase;
-            var result = Query()
+            var result = destinations
                 .Where(dst
                     => string.Equals(dst.Name, name, strComp)
                     || dst.Name.Contains(name, strComp)
                 );
 
-            if (result.Any())
-                return result.SingleOrNone();
-            else
-                return Query()
-                    .Select(d => (dest: d, levdist: Utils.LevenshteinDistance(d.Name, name)))
-                    .Where(d => d.levdist < 3)
-                    .OrderBy(d => d.levdist)
-                    .Select(d => d.dest)
-                    .FirstOrNone();
+            if (result.Any()) // found exact or containing match -> return first
+                return new[] { result.First() };
+
+            // continue with fuzzy matching via Levenshtein dist.
+            var fuzzy = destinations
+                .Select(d => (dest: d, levdist: Utils.LevenshteinDistance(d.Name.ToLower(), name.ToLower())))
+                .OrderBy(d => d.levdist);
+            if (fuzzy.First().levdist <= 2) // found good enough match
+                return new[] { fuzzy.First().dest };
+
+            return fuzzy
+                .Select(d => d.dest);
         }
 
         public Option<Destination> FindByGeo(double lat, double lon) {

@@ -25,6 +25,8 @@ namespace GoTo.Lambda {
         private static readonly string completeFailCounter = "countCompleteFail";
         private static readonly string locationFailCounter = "countLocationFail";
 
+        private static readonly string geoLocationPermission = "alexa::devices:all:geolocation:read";
+
         public async Task<SkillResponse> FunctionHandler(SkillRequest input, ILambdaContext context) {
             // Skill currently only in German so set culture statical
             CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("de-DE");
@@ -56,7 +58,23 @@ namespace GoTo.Lambda {
                     var destintationSlot = intent.Slots[Properties.Resources.TripSearchDstSlotName];
 
                     var source = sourceSlot.Value;
-                    var foundSources = await searcher.FindDestinationByName(source);
+                    IEnumerable<Destination> foundSources = null;
+                    if (string.IsNullOrWhiteSpace(source)) {
+                        if (input.Context.Geolocation == null) {
+                            return ResponseBuilder.TellWithAskForPermissionConsentCard(
+                                Properties.Speech.RequestGeoLocation,
+                                new[] { geoLocationPermission },
+                                session
+                            );
+                        } else {
+                            foundSources = new[] { await searcher.FindDestinationByGeo(
+                                input.Context.Geolocation.Coordinate.Latitude,
+                                input.Context.Geolocation.Coordinate.Longitude
+                            )};
+                        }
+                    } else {
+                        foundSources = await searcher.FindDestinationByName(source);
+                    }
 
                     var destination = destintationSlot.Value;
                     var foundDestinations = await searcher.FindDestinationByName(destination);

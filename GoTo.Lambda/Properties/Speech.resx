@@ -141,6 +141,9 @@
   <data name="NoTripsFound" xml:space="preserve">
     <value>Ich konnte keine Verbindungen von {0} nach {1} finden.</value>
   </data>
+  <data name="RequestGeoLocation" xml:space="preserve">
+    <value>Um deinen Startort zu ermitteln, brauche ich Zugriff auf deine Standortdaten. Folge den Anweisungen von Alexa, um diese zu aktivieren.</value>
+  </data>
   <data name="SearchingForTrips" xml:space="preserve">
     <value>Ich suche nach Verbindungen von {0} nach {1}</value>
   </data>

@@ -34,13 +34,11 @@ namespace GoTo.Service.Controllers {
                 [FromQuery]double? lon
             ) {
             if (!string.IsNullOrWhiteSpace(name)) {
-                return repo.FindByName(name)
-                    .WithException($"Location name '{name}' not matched!")
-                    .Map(domain => new Destination(domain))
-                    .Match<IActionResult>(
-                        some: dst => Ok(new[] { dst }),
-                        none: msg => NotFound(msg)
-                    );
+                var result = repo.FindByName(name)
+                    .Select(domain => new Destination(domain));
+                return result.Any()
+                    ? Ok(result)
+                    : (IActionResult)NotFound($"Location name '{name}' not matched!");
             } else if (lat.HasValue && lon.HasValue) {
                 return repo.FindByGeo(lat.Value, lon.Value)
                     .WithException($"Location geo '{lat}, {lon}' not matched!")

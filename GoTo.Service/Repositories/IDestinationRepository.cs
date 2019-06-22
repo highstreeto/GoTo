@@ -6,7 +6,7 @@ namespace GoTo.Service.Repositories {
     public interface IDestinationRepository {
         IEnumerable<Destination> Query();
 
-        Option<Destination> FindByName(string name);
+        IEnumerable<Destination> FindByName(string name);
 
         Option<Destination> FindByGeo(double lat, double lon);
 
