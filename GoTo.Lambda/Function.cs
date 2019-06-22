@@ -63,7 +63,7 @@ namespace GoTo.Lambda {
                         if (input.Context.Geolocation == null) {
                             return ResponseBuilder.TellWithAskForPermissionConsentCard(
                                 Properties.Speech.RequestGeoLocation,
-                                new[] { geoLocationPermission },
+                                new[] { geoLocationPermission }.AsEnumerable(),
                                 session
                             );
                         } else {

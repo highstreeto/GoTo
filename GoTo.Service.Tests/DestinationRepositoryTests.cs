@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using GoTo.Service.Domain;
+using Optional.Collections;
 
 namespace GoTo.Service.Tests {
     [TestClass]
@@ -35,16 +36,16 @@ namespace GoTo.Service.Tests {
         [TestMethod]
         public void TestSearchByName() {
             Assert.AreEqual("Linz",
-                repo.FindByName("linz").ValueOr(() => null)?.Name);
+                repo.FindByName("linz").FirstOrNone().ValueOr(() => null)?.Name);
             Assert.AreEqual("Waidhofen an der Ybbs",
-                repo.FindByName("waid").ValueOr(() => null)?.Name);
+                repo.FindByName("waid").FirstOrNone().ValueOr(() => null)?.Name);
             Assert.AreEqual("Waidhofen an der Ybbs",
-                repo.FindByName("Waid").ValueOr(() => null)?.Name);
+                repo.FindByName("Waid").FirstOrNone().ValueOr(() => null)?.Name);
 
-            Assert.IsNull(repo.FindByName("ybba").ValueOr(() => null));
-            Assert.IsNull(repo.FindByName("bla").ValueOr(() => null));
-            Assert.IsNull(repo.FindByName("lanzen").ValueOr(() => null));
-            Assert.IsNull(repo.FindByName("Ander").ValueOr(() => null));
+            Assert.IsNull(repo.FindByName("ybba").FirstOrNone().ValueOr(() => null));
+            Assert.IsNull(repo.FindByName("bla").FirstOrNone().ValueOr(() => null));
+            Assert.IsNull(repo.FindByName("lanzen").FirstOrNone().ValueOr(() => null));
+            Assert.IsNull(repo.FindByName("Ander").FirstOrNone().ValueOr(() => null));
         }
     }
 }
