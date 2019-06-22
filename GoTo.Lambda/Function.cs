@@ -32,12 +32,14 @@ namespace GoTo.Lambda {
         private ILambdaContext context;
         private SkillRequest skillRequest;
         private Session session;
+        private ProgressiveResponse progResponse;
 
         public async Task<SkillResponse> FunctionHandler(SkillRequest input, ILambdaContext context) {
             // Skill currently only in German so set culture statical
             CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("de-DE");
 
             skillRequest = input;
+            progResponse = new ProgressiveResponse(skillRequest);
             this.context = context;
             settingsClient = new SettingsClient(input);
             session = input.Session;
@@ -86,10 +88,19 @@ namespace GoTo.Lambda {
                             );
                         }
                     } else {
+                        await progResponse.SendSpeech(
+                            string.Format(Properties.Speech.SearchingForDestinations, source)
+                        );
+
                         foundSources = await searcher.FindDestinationByName(source);
                     }
 
                     var destination = destintationSlot.Value;
+
+                    await progResponse.SendSpeech(
+                        string.Format(Properties.Speech.SearchingForDestinations, destination)
+                    );
+
                     var foundDestinations = await searcher.FindDestinationByName(destination);
 
                     if (foundSources.Count() != 1 && foundDestinations.Count() != 1) {
@@ -157,6 +168,11 @@ namespace GoTo.Lambda {
 
                     var locationSlot = intent.Slots[Properties.Resources.SpecifyLocationLocSlotName]; ;
                     var location = locationSlot.Value;
+
+                    await progResponse.SendSpeech(
+                        string.Format(Properties.Speech.SearchingForDestinations, location)
+                    );
+
                     var foundLocations = await searcher.FindDestinationByName(location);
                     if (foundLocations.Count() != 1) {
                         IncreaseCounter(locationFailCounter);
@@ -221,8 +237,7 @@ namespace GoTo.Lambda {
         private async Task<SkillResponse> SearchForTrips(Destination start, Destination end) {
             context.Logger.LogLine($"Start search for {start} -> {end}");
 
-            var response = new ProgressiveResponse(skillRequest);
-            await response.SendSpeech(
+            await progResponse.SendSpeech(
                 string.Format(Properties.Speech.SearchingForTrips, start.Name, end.Name)
             );
 

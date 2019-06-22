@@ -142,6 +142,15 @@ namespace GoTo.Lambda.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ich suche nach dem Ort {0}.
+        /// </summary>
+        internal static string SearchingForDestinations {
+            get {
+                return ResourceManager.GetString("SearchingForDestinations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ich suche nach Verbindungen von {0} nach {1}.
         /// </summary>
         internal static string SearchingForTrips {
