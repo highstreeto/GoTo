@@ -61,6 +61,15 @@ namespace GoTo.Lambda.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ich kenne den Ort {0} leider nicht.  Versuch es bitte noch einmal..
+        /// </summary>
+        internal static string DestinationNotFound {
+            get {
+                return ResourceManager.GetString("DestinationNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Die nächste Verbindung von {0} nach {1} ist um {2} mit {3}.
         /// </summary>
         internal static string FoundBestTrip {
@@ -102,6 +111,24 @@ namespace GoTo.Lambda.Properties {
         internal static string SearchingForTrips {
             get {
                 return ResourceManager.GetString("SearchingForTrips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ich kenne die Orte {0} und {1} leider nicht.  Versuch es bitte noch einmal..
+        /// </summary>
+        internal static string SourceAndDestinationNotFound {
+            get {
+                return ResourceManager.GetString("SourceAndDestinationNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ich kenne den Ort {0} leider nicht.  Versuch es bitte noch einmal..
+        /// </summary>
+        internal static string SourceNotFound {
+            get {
+                return ResourceManager.GetString("SourceNotFound", resourceCulture);
             }
         }
         

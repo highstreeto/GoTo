@@ -6,6 +6,55 @@ using System.Threading.Tasks;
 
 namespace GoTo.Lambda.Services {
     public class TripSearcherFake : ITripSearcher {
+        private List<Destination> destinations;
+
+        public TripSearcherFake() {
+            this.destinations = new List<Destination>() {
+                new Destination() {
+                    Name =  "Waidhofen an der Ybbs",
+                    Latitude = 47.960310,
+                    Longitude = 14.772283
+                },
+                new Destination() {
+                    Name =  "Linz",
+                    Latitude = 48.305598,
+                    Longitude = 14.286601
+                },
+                new Destination() {
+                    Name =  "Hagenberg im Mühlkreis, Ortsmitte",
+                    Latitude = 48.367126,
+                    Longitude = 14.516660
+                },
+                new Destination() {
+                    Name =  "Wien",
+                    Latitude = 48.208344,
+                    Longitude = 16.371313
+                }
+            };
+        }
+
+        public Task<IEnumerable<Destination>> FindDestinationByName(string name) {
+            var strComp = StringComparison.CurrentCultureIgnoreCase;
+            var result = destinations
+                .Where(dst
+                    => string.Equals(dst.Name, name, strComp)
+                    || dst.Name.Contains(name, strComp)
+                );
+
+            if (result.Any())
+                return Task.FromResult(result);
+            else
+                return Task.FromResult(destinations
+                    .Select(d => (dest: d, levdist: Utils.LevenshteinDistance(d.Name, name)))
+                    .Where(d => d.levdist < 3)
+                    .OrderBy(d => d.levdist)
+                    .Select(d => d.dest));
+        }
+
+        public Task<IEnumerable<Destination>> FindDestinationByGeo(double lat, double lon) {
+            throw new NotImplementedException();
+        }
+
         public Task<IEnumerable<Trip>> SearchForTripsAsync(string start, string end, DateTime time) {
             return Task.FromResult(new List<Trip>() {
                 new Trip() {
@@ -33,6 +82,40 @@ namespace GoTo.Lambda.Services {
                     Provider = "Max"
                 }
             }.AsEnumerable());
+        }
+    }
+
+    public static class Utils {
+        // From: https://rosettacode.org/wiki/Levenshtein_distance#C.23
+        public static int LevenshteinDistance(string s, string t) {
+            int n = s.Length;
+            int m = t.Length;
+            int[,] d = new int[n + 1, m + 1];
+
+            if (n == 0) {
+                return m;
+            }
+
+            if (m == 0) {
+                return n;
+            }
+
+            for (int i = 0; i <= n; i++)
+                d[i, 0] = i;
+            for (int j = 0; j <= m; j++)
+                d[0, j] = j;
+
+            for (int j = 1; j <= m; j++)
+                for (int i = 1; i <= n; i++)
+                    if (s[i - 1] == t[j - 1])
+                        d[i, j] = d[i - 1, j - 1];  //no operation
+                    else
+                        d[i, j] = Math.Min(Math.Min(
+                            d[i - 1, j] + 1,    //a deletion
+                            d[i, j - 1] + 1),   //an insertion
+                            d[i - 1, j - 1] + 1 //a substitution
+                            );
+            return d[n, m];
         }
     }
 }

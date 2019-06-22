@@ -15,16 +15,13 @@ using System.Globalization;
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
 
-namespace GoTo.Lambda
-{
-    public class Function
-    {
+namespace GoTo.Lambda {
+    public class Function {
         private static readonly ITripSearcher searcher
-            //= new TripSearcherFake();
-            = new GoToTripSearcher(Properties.Resources.SearchService);
+            = new TripSearcherFake();
+        //= new GoToTripSearcher(Properties.Resources.SearchService);
 
-        public async Task<SkillResponse> FunctionHandler(SkillRequest input, ILambdaContext context)
-        {
+        public async Task<SkillResponse> FunctionHandler(SkillRequest input, ILambdaContext context) {
             // Skill currently only in German so set culture statical
             CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("de-DE");
 
@@ -42,12 +39,33 @@ namespace GoTo.Lambda
                     var destintationSlot = intent.Slots[Properties.Resources.TripSearchDstSlotName];
 
                     var source = sourceSlot.Value;
+                    var foundSource = await searcher.FindDestinationByName(source);
+
                     var destination = destintationSlot.Value;
+                    var foundDestination = await searcher.FindDestinationByName(destination);
+
+                    if (!foundSource.Any() && !foundDestination.Any()) {
+                        return ResponseBuilder.Ask(
+                            string.Format(Properties.Speech.SourceAndDestinationNotFound, source, destination),
+                            null
+                        );
+                    } else if (!foundSource.Any()) {
+                        return ResponseBuilder.Ask(
+                            string.Format(Properties.Speech.SourceNotFound, source),
+                            null
+                        );
+                    } else if (!foundDestination.Any()) {
+                        return ResponseBuilder.Ask(
+                            string.Format(Properties.Speech.DestinationNotFound, destination),
+                            null
+                        );
+                    }
+
                     var time = DateTime.Now;
 
                     context.Logger.LogLine($"Start search for {source} -> {destination}");
 
-                    var response = new ProgressiveResponse();
+                    var response = new ProgressiveResponse(input);
                     await response.SendSpeech(Properties.Speech.SearchingForTrips);
 
                     var trips = (await searcher.SearchForTripsAsync(source, destination, time))

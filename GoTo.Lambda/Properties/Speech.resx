@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DestinationNotFound" xml:space="preserve">
+    <value>Ich kenne den Ort {0} leider nicht.  Versuch es bitte noch einmal.</value>
+  </data>
   <data name="FoundBestTrip" xml:space="preserve">
     <value>Die nächste Verbindung von {0} nach {1} ist um {2} mit {3}</value>
   </data>
@@ -131,6 +134,12 @@
   </data>
   <data name="SearchingForTrips" xml:space="preserve">
     <value>Ich suche nach Verbindungen von {0} nach {1}</value>
+  </data>
+  <data name="SourceAndDestinationNotFound" xml:space="preserve">
+    <value>Ich kenne die Orte {0} und {1} leider nicht.  Versuch es bitte noch einmal.</value>
+  </data>
+  <data name="SourceNotFound" xml:space="preserve">
+    <value>Ich kenne den Ort {0} leider nicht.  Versuch es bitte noch einmal.</value>
   </data>
   <data name="Starter" xml:space="preserve">
     <value>Mit GoTo kannst du fragen, wie du an dein Ziel gelangst mit Öffis oder Mitfahrgelegenheiten. Zum Beispiel kannst du fragen: Wie komme ich nach Hagenberg?</value>
