@@ -155,14 +155,14 @@ namespace GoTo.Lambda {
                 return JsonConvert.DeserializeObject<T>(value.ToString());
         }
 
-        private int GetCounter(Session session, string counter) {
-            return (int)session.Attributes.GetValueOrDefault(counter, 0);
+        private long GetCounter(Session session, string counter) {
+            return (long)session.Attributes.GetValueOrDefault(counter, 0);
         }
 
         private void IncreaseCounter(Session session, string counter) {
             if (session.Attributes.ContainsKey(counter)) {
                 session.Attributes[counter] =
-                    ((int)session.Attributes[counter]) + 1;
+                    ((long)session.Attributes[counter]) + 1;
             } else {
                 session.Attributes[counter] = 1;
             }
