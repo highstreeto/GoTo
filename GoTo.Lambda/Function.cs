@@ -47,6 +47,8 @@ namespace GoTo.Lambda {
                 var intent = intentRequest.Intent;
 
                 context.Logger.LogLine($"IntentRequest {intent.Name}, Attributes: {string.Join(";", input.Session?.Attributes.Select(kp => $"{kp.Key}: {kp.Value}"))}");
+                context.Logger.LogLine($"Slots {string.Join(";", intent.Slots.Select(s => $"{s.Key}: {s.Value.Value}"))}");
+
                 if (intent.Name == Properties.Resources.TripSearchIntentName) {
                     if (GetCounter(session, completeFailCounter) >= 3) {
                         return ResponseBuilder.Tell(
