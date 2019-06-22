@@ -21,6 +21,8 @@ namespace GoTo.Lambda {
             = new TripSearcherFake();
         //= new GoToTripSearcher(Properties.Resources.SearchService);
 
+        private static readonly string completeFailCounter = "countCompleteFail";
+
         public async Task<SkillResponse> FunctionHandler(SkillRequest input, ILambdaContext context) {
             // Skill currently only in German so set culture statical
             CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("de-DE");
@@ -35,7 +37,7 @@ namespace GoTo.Lambda {
             } else if (input.Request is IntentRequest intentRequest) {
                 var intent = intentRequest.Intent;
                 if (intent.Name == Properties.Resources.TripSearchIntentName) {
-                    if ((int)input.Session.Attributes["countCompleteFail"] >= 3) {
+                    if (input.Session.Attributes.ContainsKey(completeFailCounter) && (int)input.Session.Attributes[completeFailCounter] >= 3) {
                         return ResponseBuilder.Tell(
                             Properties.Speech.CompleteFail
                         );
@@ -51,7 +53,7 @@ namespace GoTo.Lambda {
                     var foundDestinations = await searcher.FindDestinationByName(destination);
 
                     if (foundSources.Count() != 1 && foundDestinations.Count() != 1) {
-                        IncreaseCounter(input, "countCompleteFail");
+                        IncreaseCounter(input, completeFailCounter);
 
                         return ResponseBuilder.AskWithCard(
                             string.Format(Properties.Speech.SourceAndDestinationNotFound, source, destination),
