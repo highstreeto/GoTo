@@ -60,7 +60,7 @@ namespace GoTo.Lambda.Services {
             var searchParams = new TripSearchParams() {
                 StartLocation = start,
                 EndLocation = end,
-                StartTime = time
+                StartTime = time.ToString()
             };
 
             var request = JsonConvert.SerializeObject(searchParams);
@@ -84,7 +84,7 @@ namespace GoTo.Lambda.Services {
 
     public class TripSearchParams {
         public string StartLocation { get; set; }
-        public Instant StartTime { get; set; }
+        public string StartTime { get; set; }
         public string EndLocation { get; set; }
     }
 }
