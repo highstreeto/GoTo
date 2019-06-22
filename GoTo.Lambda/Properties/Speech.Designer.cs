@@ -142,7 +142,7 @@ namespace GoTo.Lambda.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ich suche nach dem Ort {0}.
+        ///   Looks up a localized string similar to Ich suche {0}.
         /// </summary>
         internal static string SearchingForDestinations {
             get {

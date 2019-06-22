@@ -145,7 +145,7 @@
     <value>Um deinen Standort zu ermitteln, brauche ich Zugriff auf deine Standortdaten. Folge den Anweisungen von Alexa, um diese zu aktivieren.</value>
   </data>
   <data name="SearchingForDestinations" xml:space="preserve">
-    <value>Ich suche nach dem Ort {0}</value>
+    <value>Ich suche {0}</value>
   </data>
   <data name="SearchingForTrips" xml:space="preserve">
     <value>Ich suche nach Verbindungen von {0} nach {1}</value>
