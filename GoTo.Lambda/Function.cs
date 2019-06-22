@@ -85,7 +85,7 @@ namespace GoTo.Lambda {
                         return ResponseBuilder.AskWithCard(
                             string.Format(Properties.Speech.SourceAndDestinationNotFound, source, destination),
                             Properties.Speech.SourceAndDestinationNotFoundTitle,
-                            string.Format("Die Orte {0} und {1} kenne ich nicht. Versuch es bitte noch einaml von vorne.",
+                            string.Format("Die Orte {0} und {1} kenne ich nicht. Versuch es bitte noch einmal von vorne.",
                                 source, destination),
                             null,
                             session
