@@ -27,17 +27,24 @@ namespace GoTo.Lambda {
             // Skill currently only in German so set culture statical
             CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("de-DE");
 
+            var session = input.Session;
             if (input.Request is LaunchRequest) {
+                if (session.Attributes == null)
+                    session.Attributes = new Dictionary<string, object>();
+
                 return ResponseBuilder.AskWithCard(
                     Properties.Speech.Starter,
                     Properties.Speech.StarterTitle,
                     Properties.Speech.StarterContent,
-                    null
+                    null,
+                    session
                 );
             } else if (input.Request is IntentRequest intentRequest) {
+                context.Logger.LogLine($"IntentRequest {input.Session}, Attributes: {input.Session?.Attributes}");
+
                 var intent = intentRequest.Intent;
                 if (intent.Name == Properties.Resources.TripSearchIntentName) {
-                    if (input.Session.Attributes.ContainsKey(completeFailCounter) && (int)input.Session.Attributes[completeFailCounter] >= 3) {
+                    if (session.Attributes.ContainsKey(completeFailCounter) && (int)input.Session.Attributes[completeFailCounter] >= 3) {
                         return ResponseBuilder.Tell(
                             Properties.Speech.CompleteFail
                         );
@@ -53,7 +60,7 @@ namespace GoTo.Lambda {
                     var foundDestinations = await searcher.FindDestinationByName(destination);
 
                     if (foundSources.Count() != 1 && foundDestinations.Count() != 1) {
-                        IncreaseCounter(input, completeFailCounter);
+                        IncreaseCounter(session, completeFailCounter);
 
                         return ResponseBuilder.AskWithCard(
                             string.Format(Properties.Speech.SourceAndDestinationNotFound, source, destination),
@@ -61,7 +68,7 @@ namespace GoTo.Lambda {
                             string.Format("Die Orte {0} und {1} kenne ich nicht. Versuch es bitte noch einaml von vorne.",
                                 source, destination),
                             null,
-                            input.Session
+                            session
                         );
                     } else if (foundSources.Count() != 1) {
                         input.Session.Attributes["destinationDst"] = foundDestinations.First();
@@ -72,7 +79,7 @@ namespace GoTo.Lambda {
                             string.Format("Den Startort {0} kenne ich lieder nicht. Versuch es vielleicht mit {1}.",
                                 source, foundSources.First().Name),
                             null,
-                            input.Session
+                            session
                         );
                     } else if (foundDestinations.Count() != 1) {
                         input.Session.Attributes["sourceDst"] = foundSources.First();
@@ -83,7 +90,7 @@ namespace GoTo.Lambda {
                             string.Format("Den Zielort {0} kenne ich leider nicht. Versuch es vielleicht mit {1}.",
                                 destination, foundDestinations.First().Name),
                             null,
-                            input.Session
+                            session
                         );
                     }
 
@@ -100,12 +107,12 @@ namespace GoTo.Lambda {
             }
         }
 
-        private void IncreaseCounter(SkillRequest request, string counter) {
-            if (request.Session.Attributes.ContainsKey(counter)) {
-                request.Session.Attributes[counter] =
-                    ((int)request.Session.Attributes[counter]) + 1;
+        private void IncreaseCounter(Session session, string counter) {
+            if (session.Attributes.ContainsKey(counter)) {
+                session.Attributes[counter] =
+                    ((int)session.Attributes[counter]) + 1;
             } else {
-                request.Session.Attributes[counter] = 1;
+                session.Attributes[counter] = 1;
             }
         }
 
