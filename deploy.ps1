@@ -20,4 +20,4 @@ zip -r ../dist.zip *
 Pop-Location
 
 Remove-Item -Recurse dist/
-eb create GoTo.Service-dev
+eb create

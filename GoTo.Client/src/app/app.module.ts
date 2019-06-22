@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { TripSearchComponent } from './trip-search/trip-search.component';
 import { TripAddComponent } from './trip-add/trip-add.component';
+import {environment} from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,7 @@ export class AppModule { }
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
-    basePath: 'http://localhost:5000'
+    basePath: environment.serverUri
   };
   return new Configuration(params);
 }
