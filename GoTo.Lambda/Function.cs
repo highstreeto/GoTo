@@ -69,9 +69,11 @@ namespace GoTo.Lambda {
                                 session
                             );
                         } else {
+                            var coords = input.Context.Geolocation.Coordinate;
+                            context.Logger.LogLine($"Geo lat: {coords.Latitude}, lon: {coords.Longitude}");
                             foundSources = await searcher.FindDestinationByGeo(
-                                input.Context.Geolocation.Coordinate.Latitude,
-                                input.Context.Geolocation.Coordinate.Longitude
+                                coords.Latitude,
+                                coords.Longitude
                             );
                         }
                     } else {
