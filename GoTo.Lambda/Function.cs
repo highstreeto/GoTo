@@ -155,14 +155,18 @@ namespace GoTo.Lambda {
                 return JsonConvert.DeserializeObject<T>(value.ToString());
         }
 
-        private long GetCounter(Session session, string counter) {
-            return (long)session.Attributes.GetValueOrDefault(counter, 0);
+        private int GetCounter(Session session, string counter) {
+            if (session.Attributes.ContainsKey(counter)) {
+                var value = session.Attributes[counter];
+                Console.WriteLine($"{value} ({value.GetType().Name})");
+                return (int)value;
+            } else
+                return 0;
         }
 
         private void IncreaseCounter(Session session, string counter) {
             if (session.Attributes.ContainsKey(counter)) {
-                session.Attributes[counter] =
-                    ((long)session.Attributes[counter]) + 1;
+                session.Attributes[counter] = GetCounter(session, counter) + 1;
             } else {
                 session.Attributes[counter] = 1;
             }
