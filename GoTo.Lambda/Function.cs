@@ -28,10 +28,10 @@ namespace GoTo.Lambda {
             CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("de-DE");
 
             var session = input.Session;
-            if (input.Request is LaunchRequest) {
-                if (session.Attributes == null)
-                    session.Attributes = new Dictionary<string, object>();
+            if (session.Attributes == null)
+                session.Attributes = new Dictionary<string, object>();
 
+            if (input.Request is LaunchRequest) {
                 return ResponseBuilder.AskWithCard(
                     Properties.Speech.Starter,
                     Properties.Speech.StarterTitle,
