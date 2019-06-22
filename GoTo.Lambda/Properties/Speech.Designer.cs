@@ -61,6 +61,15 @@ namespace GoTo.Lambda.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ich verstehte die nicht lieder nicht. Versuche es vielleicht in einer anderen Umgebung nocheinaml?.
+        /// </summary>
+        internal static string CompleteFail {
+            get {
+                return ResourceManager.GetString("CompleteFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ich kenne den Ort {0} leider nicht.  Versuch es bitte noch einmal..
         /// </summary>
         internal static string DestinationNotFound {

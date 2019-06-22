@@ -120,6 +120,9 @@
   <data name="SearchService" xml:space="preserve">
     <value>http://goto.eu-west-1.elasticbeanstalk.com</value>
   </data>
+  <data name="SpecifyLocationIntentName" xml:space="preserve">
+    <value>SpecifyLocationIntent</value>
+  </data>
   <data name="TripSearchDstSlotName" xml:space="preserve">
     <value>Destination</value>
   </data>

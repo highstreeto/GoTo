@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CompleteFail" xml:space="preserve">
+    <value>Ich verstehte die nicht lieder nicht. Versuche es vielleicht in einer anderen Umgebung nocheinaml?</value>
+  </data>
   <data name="DestinationNotFound" xml:space="preserve">
     <value>Ich kenne den Ort {0} leider nicht.  Versuch es bitte noch einmal.</value>
   </data>

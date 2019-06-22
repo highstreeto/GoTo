@@ -35,6 +35,12 @@ namespace GoTo.Lambda {
             } else if (input.Request is IntentRequest intentRequest) {
                 var intent = intentRequest.Intent;
                 if (intent.Name == Properties.Resources.TripSearchIntentName) {
+                    if ((int)input.Session.Attributes["countCompleteFail"] >= 3) {
+                        return ResponseBuilder.Tell(
+                            Properties.Speech.CompleteFail
+                        );
+                    }
+
                     var sourceSlot = intent.Slots[Properties.Resources.TripSearchSrcSlotName];
                     var destintationSlot = intent.Slots[Properties.Resources.TripSearchDstSlotName];
 
@@ -45,33 +51,44 @@ namespace GoTo.Lambda {
                     var foundDestinations = await searcher.FindDestinationByName(destination);
 
                     if (foundSources.Count() != 1 && foundDestinations.Count() != 1) {
+                        IncreaseCounter(input, "countCompleteFail");
+
                         return ResponseBuilder.AskWithCard(
                             string.Format(Properties.Speech.SourceAndDestinationNotFound, source, destination),
                             Properties.Speech.SourceAndDestinationNotFoundTitle,
-                            string.Format("Die Orte {0} und {1} kenne ich nicht. Versuch es vielleicht mit {1}.",
-                                source, destination, foundSources.First().Name),
-                            null
+                            string.Format("Die Orte {0} und {1} kenne ich nicht. Versuch es bitte noch einaml von vorne.",
+                                source, destination),
+                            null,
+                            input.Session
                         );
                     } else if (foundSources.Count() != 1) {
+                        input.Session.Attributes["destinationDst"] = foundDestinations.First();
+
                         return ResponseBuilder.AskWithCard(
                             string.Format(Properties.Speech.SourceNotFound, source),
                             Properties.Speech.SourceNotFoundTitle,
                             string.Format("Den Startort {0} kenne ich lieder nicht. Versuch es vielleicht mit {1}.",
                                 source, foundSources.First().Name),
-                            null
+                            null,
+                            input.Session
                         );
                     } else if (foundDestinations.Count() != 1) {
+                        input.Session.Attributes["sourceDst"] = foundSources.First();
+
                         return ResponseBuilder.AskWithCard(
                             string.Format(Properties.Speech.DestinationNotFound, destination),
                             Properties.Speech.DestinationNotFoundTitle,
                             string.Format("Den Zielort {0} kenne ich leider nicht. Versuch es vielleicht mit {1}.",
                                 destination, foundDestinations.First().Name),
-                            null
+                            null,
+                            input.Session
                         );
                     }
 
                     var time = DateTime.Now;
                     return await SearchForTrips(context, input, foundSources.First(), foundDestinations.First(), time);
+                } else if (intent.Name == Properties.Resources.SpecifyLocationIntentName) {
+                    return ResponseBuilder.Tell("WIP");
                 } else {
                     // TODO Better response for unknown intent
                     return ResponseBuilder.Tell(Properties.Speech.InvalidRequest);
@@ -81,11 +98,22 @@ namespace GoTo.Lambda {
             }
         }
 
+        private void IncreaseCounter(SkillRequest request, string counter) {
+            if (request.Session.Attributes.ContainsKey(counter)) {
+                request.Session.Attributes[counter] =
+                    ((int)request.Session.Attributes[counter]) + 1;
+            } else {
+                request.Session.Attributes[counter] = 1;
+            }
+        }
+
         private async Task<SkillResponse> SearchForTrips(ILambdaContext context, SkillRequest input, Destination start, Destination end, DateTime time) {
             context.Logger.LogLine($"Start search for {start} -> {end}");
 
             var response = new ProgressiveResponse(input);
-            await response.SendSpeech(Properties.Speech.SearchingForTrips);
+            await response.SendSpeech(
+                string.Format(Properties.Speech.SearchingForTrips, start.Name, end.Name)
+            );
 
             var trips = (await searcher.SearchForTripsAsync(start.Name, end.Name, time))
                 .OrderBy(t => t.StartTime)
