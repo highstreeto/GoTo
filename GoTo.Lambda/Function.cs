@@ -193,6 +193,9 @@ namespace GoTo.Lambda {
             if (session.Attributes.ContainsKey(counter)) {
                 var value = session.Attributes[counter];
                 Console.WriteLine($"{value} ({value.GetType().Name})");
+                if (value is long lvalue) {
+                    return (int)lvalue;
+                }
                 return (int)value;
             } else
                 return 0;
