@@ -151,7 +151,7 @@ namespace GoTo.Lambda.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ich kenne die Orte {0} und {1} leider nicht.  Versuch es bitte noch einmal..
+        ///   Looks up a localized string similar to Ich kenne die Orte {0} und {1} leider nicht.  Versuche es bitte zum Beispiel mit: Der Ort ist {1}.
         /// </summary>
         internal static string SourceAndDestinationNotFound {
             get {
@@ -178,7 +178,7 @@ namespace GoTo.Lambda.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ich kenne den Ort {0} leider nicht.  Versuch es bitte noch einmal..
+        ///   Looks up a localized string similar to Ich kenne den Ort {0} leider nicht.  Versuche es bitte zum Beispiel mit: Der Ort ist {1}.
         /// </summary>
         internal static string SourceNotFound {
             get {

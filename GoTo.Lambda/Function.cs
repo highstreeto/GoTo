@@ -106,8 +106,8 @@ namespace GoTo.Lambda {
                         } else {
                             return ResponseBuilder.AskWithCard(
                                 string.Format(Properties.Speech.SourceNotFound, source),
-                                Properties.Speech.SourceNotFoundTitle,
-                                string.Format("Den Startort {0} kenne ich lieder nicht. Versuch es vielleicht mit {1}.",
+                                string.Format(Properties.Speech.SourceNotFoundTitle, foundSources.First().Name),
+                                string.Format("Den Startort {0} kenne ich lieder nicht. Versuch es mit: Der Ort ist {1}.",
                                     source, foundSources.First().Name),
                                 null,
                                 session
@@ -118,8 +118,8 @@ namespace GoTo.Lambda {
 
                         return ResponseBuilder.AskWithCard(
                             string.Format(Properties.Speech.DestinationNotFound, destination),
-                            Properties.Speech.DestinationNotFoundTitle,
-                            string.Format("Den Zielort {0} kenne ich leider nicht. Versuch es vielleicht mit {1}.",
+                            string.Format(Properties.Speech.DestinationNotFoundTitle, foundDestinations.First().Name),
+                            string.Format("Den Zielort {0} kenne ich leider nicht. Versuch es mit: Der Ort ist {1}.",
                                 destination, foundDestinations.First().Name),
                             null,
                             session
