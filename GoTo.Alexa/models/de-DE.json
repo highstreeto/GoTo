@@ -44,8 +44,7 @@
             "nächste verbindung zu {Destination}",
             "wie könnte ich nach {Destination} kommen",
             "wer fährt als nächster nach {Destination}",
-            "wie komme ich nach {Destination}",
-            "{Source} nach {Destination}"
+            "wie komme ich nach {Destination}"
           ]
         },
         {
@@ -57,8 +56,11 @@
             }
           ],
           "samples": [
+            "der startort ist {Location}",
             "der ort ist {Location}",
             "müsste {Location} sein",
+            "{Location}",
+            "sollte {Location} sein",
             "{Location}"
           ]
         }
