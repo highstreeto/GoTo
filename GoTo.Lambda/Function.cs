@@ -107,8 +107,8 @@ namespace GoTo.Lambda {
                             );
                         } else {
                             return ResponseBuilder.AskWithCard(
-                                string.Format(Properties.Speech.SourceNotFound, source),
-                                string.Format(Properties.Speech.SourceNotFoundTitle, foundSources.First().Name),
+                                string.Format(Properties.Speech.SourceNotFound, source, foundSources.First().Name),
+                                Properties.Speech.SourceNotFoundTitle,
                                 string.Format("Den Startort {0} kenne ich lieder nicht. Versuche es mit: Der Ort ist {1}.",
                                     source, foundSources.First().Name),
                                 null,
@@ -119,8 +119,8 @@ namespace GoTo.Lambda {
                         input.Session.Attributes["sourceDst"] = foundSources.First();
 
                         return ResponseBuilder.AskWithCard(
-                            string.Format(Properties.Speech.DestinationNotFound, destination),
-                            string.Format(Properties.Speech.DestinationNotFoundTitle, foundDestinations.First().Name),
+                            string.Format(Properties.Speech.DestinationNotFound, destination, foundDestinations.First().Name),
+                            Properties.Speech.DestinationNotFoundTitle,
                             string.Format("Den Zielort {0} kenne ich leider nicht. Versuche es mit: Der Ort ist {1}.",
                                 destination, foundDestinations.First().Name),
                             null,
