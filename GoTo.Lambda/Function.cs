@@ -49,15 +49,15 @@ namespace GoTo.Lambda {
                             string.Format(Properties.Speech.SourceAndDestinationNotFound, source, destination),
                             Properties.Speech.SourceAndDestinationNotFoundTitle,
                             string.Format("Die Orte {0} und {1} kenne ich nicht. Versuch es vielleicht mit {1}.",
-                                source, destination, foundSources.First()),
+                                source, destination, foundSources.First().Name),
                             null
                         );
                     } else if (foundSources.Count() != 1) {
                         return ResponseBuilder.AskWithCard(
                             string.Format(Properties.Speech.SourceNotFound, source),
-                            Properties.Speech.SourceNotFound,
+                            Properties.Speech.SourceNotFoundTitle,
                             string.Format("Den Startort {0} kenne ich lieder nicht. Versuch es vielleicht mit {1}.",
-                                source, foundSources.First()),
+                                source, foundSources.First().Name),
                             null
                         );
                     } else if (foundDestinations.Count() != 1) {
@@ -65,7 +65,7 @@ namespace GoTo.Lambda {
                             string.Format(Properties.Speech.DestinationNotFound, destination),
                             Properties.Speech.DestinationNotFoundTitle,
                             string.Format("Den Zielort {0} kenne ich leider nicht. Versuch es vielleicht mit {1}.",
-                                destination, foundDestinations.First()),
+                                destination, foundDestinations.First().Name),
                             null
                         );
                     }
