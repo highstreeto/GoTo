@@ -153,9 +153,11 @@ namespace GoTo.Lambda {
                         IncreaseCounter(session, locationFailCounter);
 
                         return ResponseBuilder.AskWithCard(
-                            string.Format(Properties.Speech.DestinationNotFound, destination),
-                            Properties.Speech.DestinationNotFoundTitle,
-                            string.Format("Den {0} {1} kenne ich leider nicht. Versuch es vielleicht mit {2}.",
+                            string.Format(Properties.Speech.DestinationNotFound, location, foundLocations.First().Name),
+                            source == null
+                                ? Properties.Speech.SourceNotFoundTitle
+                                : Properties.Speech.DestinationNotFoundTitle,
+                            string.Format("Den {0} {1} kenne ich leider nicht. Versuche es mit: Der Ort ist {2}.",
                                 source == null ? "Startort" : "Zielort",
                                 location, foundLocations.First().Name),
                             null,
