@@ -19,8 +19,8 @@ using Newtonsoft.Json;
 namespace GoTo.Lambda {
     public class Function {
         private static readonly ITripSearcher searcher
-            = new TripSearcherFake();
-        //= new GoToTripSearcher(Properties.Resources.SearchService);
+            //= new TripSearcherFake();
+            = new GoToTripSearcher(Properties.Resources.SearchService);
 
         private static readonly string completeFailCounter = "countCompleteFail";
         private static readonly string locationFailCounter = "countLocationFail";
