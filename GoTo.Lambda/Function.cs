@@ -40,9 +40,9 @@ namespace GoTo.Lambda {
                     session
                 );
             } else if (input.Request is IntentRequest intentRequest) {
-                context.Logger.LogLine($"IntentRequest {input.Session}, Attributes: {input.Session?.Attributes}");
-
                 var intent = intentRequest.Intent;
+
+                context.Logger.LogLine($"IntentRequest {intent.Name}, Attributes: {string.Join(";", input.Session?.Attributes.Select(kp => $"{kp.Key}: {kp.Value}"))}");
                 if (intent.Name == Properties.Resources.TripSearchIntentName) {
                     if (session.Attributes.ContainsKey(completeFailCounter) && (int)input.Session.Attributes[completeFailCounter] >= 3) {
                         return ResponseBuilder.Tell(
