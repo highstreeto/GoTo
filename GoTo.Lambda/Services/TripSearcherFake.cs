@@ -46,9 +46,9 @@ namespace GoTo.Lambda.Services {
 
             // continue with fuzzy matching via Levenshtein dist.
             var fuzzy = destinations
-                .Select(d => (dest: d, levdist: Utils.LevenshteinDistance(d.Name, name)))
+                .Select(d => (dest: d, levdist: Utils.LevenshteinDistance(d.Name.ToLower(), name.ToLower())))
                 .OrderBy(d => d.levdist);
-            if (fuzzy.First().levdist < 2) // found good enough match
+            if (fuzzy.First().levdist <= 2) // found good enough match
                 return Task.FromResult(new[] { fuzzy.First().dest }.AsEnumerable());
 
             return Task.FromResult(fuzzy
