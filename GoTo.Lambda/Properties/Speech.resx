@@ -121,7 +121,7 @@
     <value>Ich verstehte die nicht lieder nicht. Versuche es vielleicht in einer anderen Umgebung nocheinaml?</value>
   </data>
   <data name="DestinationNotFound" xml:space="preserve">
-    <value>Ich kenne den Ort {0} leider nicht.  Versuch es bitte noch einmal.</value>
+    <value>Ich kenne den Ort {0} leider nicht.  Versuche es bitte zum Beispiel mit: Der Ort ist {1}</value>
   </data>
   <data name="DestinationNotFoundTitle" xml:space="preserve">
     <value>Nicht erkanter Zielort</value>
@@ -148,7 +148,7 @@
     <value>Ich suche nach Verbindungen von {0} nach {1}</value>
   </data>
   <data name="SourceAndDestinationNotFound" xml:space="preserve">
-    <value>Ich kenne die Orte {0} und {1} leider nicht.  Versuche es bitte zum Beispiel mit: Der Ort ist {1}</value>
+    <value>Ich kenne die Orte {0} und {1} leider nicht.  Versuch es bitte noch einmal.</value>
   </data>
   <data name="SourceAndDestinationNotFoundTitle" xml:space="preserve">
     <value>Nicht erkanter Startort und Zielort</value>
