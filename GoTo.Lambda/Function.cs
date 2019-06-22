@@ -39,36 +39,39 @@ namespace GoTo.Lambda {
                     var destintationSlot = intent.Slots[Properties.Resources.TripSearchDstSlotName];
 
                     var source = sourceSlot.Value;
-                    var foundSource = await searcher.FindDestinationByName(source);
+                    var foundSources = await searcher.FindDestinationByName(source);
 
                     var destination = destintationSlot.Value;
-                    var foundDestination = await searcher.FindDestinationByName(destination);
+                    var foundDestinations = await searcher.FindDestinationByName(destination);
 
-                    if (!foundSource.Any() && !foundDestination.Any()) {
+                    if (foundSources.Count() != 1 && foundDestinations.Count() != 1) {
                         return ResponseBuilder.AskWithCard(
                             string.Format(Properties.Speech.SourceAndDestinationNotFound, source, destination),
-                            Properties.Speech.UnknownDestinationTitle,
-                            string.Format("Die Orte {0} und {1} kenne ich nicht", source, destination),
+                            Properties.Speech.SourceAndDestinationNotFoundTitle,
+                            string.Format("Die Orte {0} und {1} kenne ich nicht. Versuch es vielleicht mit {1}.",
+                                source, destination, foundSources.First()),
                             null
                         );
-                    } else if (!foundSource.Any()) {
+                    } else if (foundSources.Count() != 1) {
                         return ResponseBuilder.AskWithCard(
                             string.Format(Properties.Speech.SourceNotFound, source),
-                            Properties.Speech.UnknownDestinationTitle,
-                            string.Format("Den Startort {0} kenne ich nicht", source),
+                            Properties.Speech.SourceNotFound,
+                            string.Format("Den Startort {0} kenne ich lieder nicht. Versuch es vielleicht mit {1}.",
+                                source, foundSources.First()),
                             null
                         );
-                    } else if (!foundDestination.Any()) {
+                    } else if (foundDestinations.Count() != 1) {
                         return ResponseBuilder.AskWithCard(
                             string.Format(Properties.Speech.DestinationNotFound, destination),
-                            Properties.Speech.UnknownDestinationTitle,
-                            string.Format("Den Zielort {0} kenne ich nicht", destination),
+                            Properties.Speech.DestinationNotFoundTitle,
+                            string.Format("Den Zielort {0} kenne ich leider nicht. Versuch es vielleicht mit {1}.",
+                                destination, foundDestinations.First()),
                             null
                         );
                     }
 
                     var time = DateTime.Now;
-                    return await SearchForTrips(context, input, foundSource.First(), foundDestination.First(), time);
+                    return await SearchForTrips(context, input, foundSources.First(), foundDestinations.First(), time);
                 } else {
                     // TODO Better response for unknown intent
                     return ResponseBuilder.Tell(Properties.Speech.InvalidRequest);

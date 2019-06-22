@@ -41,14 +41,18 @@ namespace GoTo.Lambda.Services {
                     || dst.Name.Contains(name, strComp)
                 );
 
-            if (result.Any())
-                return Task.FromResult(result);
-            else
-                return Task.FromResult(destinations
-                    .Select(d => (dest: d, levdist: Utils.LevenshteinDistance(d.Name, name)))
-                    .Where(d => d.levdist < 3)
-                    .OrderBy(d => d.levdist)
-                    .Select(d => d.dest));
+            if (result.Any()) // found exact or containing match -> return first
+                return Task.FromResult(new[] { result.First() }.AsEnumerable());
+
+            // continue with fuzzy matching via Levenshtein dist.
+            var fuzzy = destinations
+                .Select(d => (dest: d, levdist: Utils.LevenshteinDistance(d.Name, name)))
+                .OrderBy(d => d.levdist);
+            if (fuzzy.First().levdist < 2) // found good enough match
+                return Task.FromResult(new[] { fuzzy.First().dest }.AsEnumerable());
+
+            return Task.FromResult(fuzzy
+                .Select(d => d.dest));
         }
 
         public Task<IEnumerable<Destination>> FindDestinationByGeo(double lat, double lon) {

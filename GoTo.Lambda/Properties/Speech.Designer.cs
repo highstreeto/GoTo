@@ -70,6 +70,15 @@ namespace GoTo.Lambda.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nicht erkanter Zielort.
+        /// </summary>
+        internal static string DestinationNotFoundTitle {
+            get {
+                return ResourceManager.GetString("DestinationNotFoundTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Die nächste Verbindung von {0} nach {1} ist um {2} mit {3}.
         /// </summary>
         internal static string FoundBestTrip {
@@ -124,11 +133,29 @@ namespace GoTo.Lambda.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nicht erkanter Startort und Zielort.
+        /// </summary>
+        internal static string SourceAndDestinationNotFoundTitle {
+            get {
+                return ResourceManager.GetString("SourceAndDestinationNotFoundTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ich kenne den Ort {0} leider nicht.  Versuch es bitte noch einmal..
         /// </summary>
         internal static string SourceNotFound {
             get {
                 return ResourceManager.GetString("SourceNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nicht erkannter Startoirt.
+        /// </summary>
+        internal static string SourceNotFoundTitle {
+            get {
+                return ResourceManager.GetString("SourceNotFoundTitle", resourceCulture);
             }
         }
         
@@ -158,15 +185,6 @@ namespace GoTo.Lambda.Properties {
         internal static string StarterTitle {
             get {
                 return ResourceManager.GetString("StarterTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Nicht erkannte Orte.
-        /// </summary>
-        internal static string UnknownDestinationTitle {
-            get {
-                return ResourceManager.GetString("UnknownDestinationTitle", resourceCulture);
             }
         }
     }

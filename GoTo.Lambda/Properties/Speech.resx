@@ -120,6 +120,9 @@
   <data name="DestinationNotFound" xml:space="preserve">
     <value>Ich kenne den Ort {0} leider nicht.  Versuch es bitte noch einmal.</value>
   </data>
+  <data name="DestinationNotFoundTitle" xml:space="preserve">
+    <value>Nicht erkanter Zielort</value>
+  </data>
   <data name="FoundBestTrip" xml:space="preserve">
     <value>Die nächste Verbindung von {0} nach {1} ist um {2} mit {3}</value>
   </data>
@@ -138,8 +141,14 @@
   <data name="SourceAndDestinationNotFound" xml:space="preserve">
     <value>Ich kenne die Orte {0} und {1} leider nicht.  Versuch es bitte noch einmal.</value>
   </data>
+  <data name="SourceAndDestinationNotFoundTitle" xml:space="preserve">
+    <value>Nicht erkanter Startort und Zielort</value>
+  </data>
   <data name="SourceNotFound" xml:space="preserve">
     <value>Ich kenne den Ort {0} leider nicht.  Versuch es bitte noch einmal.</value>
+  </data>
+  <data name="SourceNotFoundTitle" xml:space="preserve">
+    <value>Nicht erkannter Startoirt</value>
   </data>
   <data name="Starter" xml:space="preserve">
     <value>Mit GoTo kannst du fragen, wie du an dein Ziel gelangst mit Öffis oder Mitfahrgelegenheiten. </value>
@@ -151,8 +160,5 @@ Nächste Verbindung von Wien nach Linz?</value>
   </data>
   <data name="StarterTitle" xml:space="preserve">
     <value>GoTo - Fahren mit Öffis oder Mitfahren</value>
-  </data>
-  <data name="UnknownDestinationTitle" xml:space="preserve">
-    <value>Nicht erkannte Orte</value>
   </data>
 </root>
