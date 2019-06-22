@@ -79,6 +79,15 @@ namespace GoTo.Lambda.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Location.
+        /// </summary>
+        internal static string SpecifyLocationLocSlotName {
+            get {
+                return ResourceManager.GetString("SpecifyLocationLocSlotName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Destination.
         /// </summary>
         internal static string TripSearchDstSlotName {

@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
+using Newtonsoft.Json;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
@@ -22,6 +23,7 @@ namespace GoTo.Lambda {
         //= new GoToTripSearcher(Properties.Resources.SearchService);
 
         private static readonly string completeFailCounter = "countCompleteFail";
+        private static readonly string locationFailCounter = "countLocationFail";
 
         public async Task<SkillResponse> FunctionHandler(SkillRequest input, ILambdaContext context) {
             // Skill currently only in German so set culture statical
@@ -44,7 +46,7 @@ namespace GoTo.Lambda {
 
                 context.Logger.LogLine($"IntentRequest {intent.Name}, Attributes: {string.Join(";", input.Session?.Attributes.Select(kp => $"{kp.Key}: {kp.Value}"))}");
                 if (intent.Name == Properties.Resources.TripSearchIntentName) {
-                    if (session.Attributes.ContainsKey(completeFailCounter) && (int)input.Session.Attributes[completeFailCounter] >= 3) {
+                    if (GetCounter(session, completeFailCounter) >= 3) {
                         return ResponseBuilder.Tell(
                             Properties.Speech.CompleteFail
                         );
@@ -97,17 +99,45 @@ namespace GoTo.Lambda {
                     var time = DateTime.Now;
                     return await SearchForTrips(context, input, foundSources.First(), foundDestinations.First(), time);
                 } else if (intent.Name == Properties.Resources.SpecifyLocationIntentName) {
-                    var source = session.Attributes.GetValueOrDefault("sourceDst", null);
-                    var destination = session.Attributes.GetValueOrDefault("destinationDst", null);
+                    if (GetCounter(session, locationFailCounter) >= 3) {
+                        return ResponseBuilder.Tell(
+                            Properties.Speech.LocationFail
+                        );
+                    }
+
+                    var source = GetAttributeAs<Destination>(session, "sourceDst");
+                    var destination = GetAttributeAs<Destination>(session, "destinationDst");
                     if (source == null && destination == null) {
                         return ResponseBuilder.Ask(
                             Properties.Speech.WrongOrderSpecLoc,
                             null
                         );
                     }
-                    context.Logger.LogLine($"{source} ({source?.GetType().Name}) => {destination} ({destination?.GetType().Name})");
 
-                    return ResponseBuilder.Tell("WIP");
+                    var locationSlot = intent.Slots[Properties.Resources.SpecifyLocationLocSlotName]; ;
+                    var location = locationSlot.Value;
+                    var foundLocations = await searcher.FindDestinationByName(location);
+                    if (foundLocations.Count() != 1) {
+                        IncreaseCounter(session, locationFailCounter);
+
+                        return ResponseBuilder.AskWithCard(
+                            string.Format(Properties.Speech.DestinationNotFound, destination),
+                            Properties.Speech.DestinationNotFoundTitle,
+                            string.Format("Den {0} {1} kenne ich leider nicht. Versuch es vielleicht mit {2}.",
+                                source == null ? "Startort" : "Zielort",
+                                location, foundLocations.First().Name),
+                            null,
+                            session
+                        );
+                    } else {
+                        if (source == null)
+                            source = foundLocations.First();
+                        if (destination == null)
+                            destination = foundLocations.First();
+
+                        var time = DateTime.Now;
+                        return await SearchForTrips(context, input, source, destination, time);
+                    }
                 } else {
                     // TODO Better response for unknown intent
                     return ResponseBuilder.Tell(Properties.Speech.InvalidRequest);
@@ -115,6 +145,18 @@ namespace GoTo.Lambda {
             } else {
                 return ResponseBuilder.Tell(Properties.Speech.InvalidRequest);
             }
+        }
+
+        private T GetAttributeAs<T>(Session session, string attr) {
+            var value = session.Attributes.GetValueOrDefault(attr, null);
+            if (value == null)
+                return default(T);
+            else
+                return JsonConvert.DeserializeObject<T>(value.ToString());
+        }
+
+        private int GetCounter(Session session, string counter) {
+            return (int)session.Attributes.GetValueOrDefault(counter, 0);
         }
 
         private void IncreaseCounter(Session session, string counter) {

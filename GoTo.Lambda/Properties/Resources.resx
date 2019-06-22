@@ -123,6 +123,9 @@
   <data name="SpecifyLocationIntentName" xml:space="preserve">
     <value>SpecifyLocationIntent</value>
   </data>
+  <data name="SpecifyLocationLocSlotName" xml:space="preserve">
+    <value>Location</value>
+  </data>
   <data name="TripSearchDstSlotName" xml:space="preserve">
     <value>Destination</value>
   </data>

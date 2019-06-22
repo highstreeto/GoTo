@@ -135,6 +135,9 @@
   <data name="InvalidRequest" xml:space="preserve">
     <value>Das habe ich nicht verstanden.</value>
   </data>
+  <data name="LocationFail" xml:space="preserve">
+    <value>Ich verstehte dich leider nicht korrekt. Versuche es vielleicht in einer anderen Umgebung nocheinaml?</value>
+  </data>
   <data name="NoTripsFound" xml:space="preserve">
     <value>Ich konnte keine Verbindungen von {0} nach {1} finden.</value>
   </data>
@@ -154,7 +157,7 @@
     <value>Nicht erkannter Startoirt</value>
   </data>
   <data name="Starter" xml:space="preserve">
-    <value>Mit GoTo kannst du fragen, wie du an dein Ziel gelangst mit Öffis oder Mitfahrgelegenheiten. </value>
+    <value>Mit GoTo kannst du fragen, wie du an dein Ziel gelangst mit Öffis oder Mitfahrgelegenheiten.  Nach welcher Verbindung soll ich suchen?</value>
   </data>
   <data name="StarterContent" xml:space="preserve">
     <value>Beispielfragen:
@@ -165,6 +168,6 @@ Nächste Verbindung von Wien nach Linz?</value>
     <value>GoTo - Fahren mit Öffis oder Mitfahren</value>
   </data>
   <data name="WrongOrderSpecLoc" xml:space="preserve">
-    <value>Du musst Start- und Zielort zuerst angeben, damit ich nach Verbindungen suchen kann.</value>
+    <value>Gib zuerst Start- und Zielort an, damit ich nach Verbindungen suchen kann.</value>
   </data>
 </root>

@@ -115,6 +115,15 @@ namespace GoTo.Lambda.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ich verstehte dich leider nicht korrekt. Versuche es vielleicht in einer anderen Umgebung nocheinaml?.
+        /// </summary>
+        internal static string LocationFail {
+            get {
+                return ResourceManager.GetString("LocationFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ich konnte keine Verbindungen von {0} nach {1} finden..
         /// </summary>
         internal static string NoTripsFound {
@@ -169,7 +178,7 @@ namespace GoTo.Lambda.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mit GoTo kannst du fragen, wie du an dein Ziel gelangst mit Öffis oder Mitfahrgelegenheiten. .
+        ///   Looks up a localized string similar to Mit GoTo kannst du fragen, wie du an dein Ziel gelangst mit Öffis oder Mitfahrgelegenheiten.  Nach welcher Verbindung soll ich suchen?.
         /// </summary>
         internal static string Starter {
             get {
@@ -198,7 +207,7 @@ namespace GoTo.Lambda.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Du musst Start- und Zielort zuerst angeben, damit ich nach Verbindungen suchen kann..
+        ///   Looks up a localized string similar to Gib zuerst Start- und Zielort an, damit ich nach Verbindungen suchen kann..
         /// </summary>
         internal static string WrongOrderSpecLoc {
             get {
