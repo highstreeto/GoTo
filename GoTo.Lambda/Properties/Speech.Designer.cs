@@ -169,6 +169,15 @@ namespace GoTo.Lambda.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Den Startort konnte ich lieder nicht ermitteln. Versuch es vielleicht diesen explizit zu nennen..
+        /// </summary>
+        internal static string SourceGeoNotFound {
+            get {
+                return ResourceManager.GetString("SourceGeoNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ich kenne den Ort {0} leider nicht.  Versuch es bitte noch einmal..
         /// </summary>
         internal static string SourceNotFound {

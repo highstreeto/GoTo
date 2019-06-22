@@ -153,6 +153,9 @@
   <data name="SourceAndDestinationNotFoundTitle" xml:space="preserve">
     <value>Nicht erkanter Startort und Zielort</value>
   </data>
+  <data name="SourceGeoNotFound" xml:space="preserve">
+    <value>Den Startort konnte ich lieder nicht ermitteln. Versuch es vielleicht diesen explizit zu nennen.</value>
+  </data>
   <data name="SourceNotFound" xml:space="preserve">
     <value>Ich kenne den Ort {0} leider nicht.  Versuch es bitte noch einmal.</value>
   </data>

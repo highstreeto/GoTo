@@ -93,14 +93,24 @@ namespace GoTo.Lambda {
                     } else if (foundSources.Count() != 1) {
                         input.Session.Attributes["destinationDst"] = foundDestinations.First();
 
-                        return ResponseBuilder.AskWithCard(
-                            string.Format(Properties.Speech.SourceNotFound, source),
-                            Properties.Speech.SourceNotFoundTitle,
-                            string.Format("Den Startort {0} kenne ich lieder nicht. Versuch es vielleicht mit {1}.",
-                                source, foundSources.First().Name),
-                            null,
-                            session
-                        );
+                        if (string.IsNullOrWhiteSpace(source)) {
+                            return ResponseBuilder.AskWithCard(
+                                string.Format(Properties.Speech.SourceGeoNotFound),
+                                Properties.Speech.SourceNotFoundTitle,
+                                "Den Startort konnte ich lieder nicht ermitteln. Versuch es vielleicht diesen explizit zu nennen.",
+                                null,
+                                session
+                            );
+                        } else {
+                            return ResponseBuilder.AskWithCard(
+                                string.Format(Properties.Speech.SourceNotFound, source),
+                                Properties.Speech.SourceNotFoundTitle,
+                                string.Format("Den Startort {0} kenne ich lieder nicht. Versuch es vielleicht mit {1}.",
+                                    source, foundSources.First().Name),
+                                null,
+                                session
+                            );
+                        }
                     } else if (foundDestinations.Count() != 1) {
                         input.Session.Attributes["sourceDst"] = foundSources.First();
 
