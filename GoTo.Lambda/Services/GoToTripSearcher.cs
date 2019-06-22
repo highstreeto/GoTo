@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GoTo.Lambda.Domain;
 using Newtonsoft.Json;
+using NodaTime;
 
 namespace GoTo.Lambda.Services {
     public class GoToTripSearcher : ITripSearcher {
@@ -54,7 +55,7 @@ namespace GoTo.Lambda.Services {
             }
         }
 
-        public async Task<IEnumerable<Trip>> SearchForTripsAsync(string start, string end, DateTime time) {
+        public async Task<IEnumerable<Trip>> SearchForTripsAsync(string start, string end, Instant time) {
             var client = new HttpClient();
             var searchParams = new TripSearchParams() {
                 StartLocation = start,
@@ -80,7 +81,7 @@ namespace GoTo.Lambda.Services {
 
     public class TripSearchParams {
         public string StartLocation { get; set; }
-        public DateTime StartTime { get; set; }
+        public Instant StartTime { get; set; }
         public string EndLocation { get; set; }
     }
 }

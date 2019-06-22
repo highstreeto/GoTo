@@ -1,4 +1,5 @@
 using GoTo.Lambda.Domain;
+using NodaTime;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,29 +62,29 @@ namespace GoTo.Lambda.Services {
             );
         }
 
-        public Task<IEnumerable<Trip>> SearchForTripsAsync(string start, string end, DateTime time) {
+        public Task<IEnumerable<Trip>> SearchForTripsAsync(string start, string end, Instant time) {
             return Task.FromResult(new List<Trip>() {
                 new Trip() {
                     StartLocation = "Hagenberg im Mühlkreis",
-                    StartTime = time.AddHours(0.5),
+                    StartTime = DateTime.Now,
                     EndLocation = "Linz/Donau",
-                    EndTime = time.AddHours(1.5),
+                    EndTime = DateTime.Now.AddHours(1.5),
                     Kind = TripKind.PublicTransport,
                     Provider = "ÖBB"
                 },
                 new Trip() {
                     StartLocation = "Hagenberg im Mühlkreis",
-                    StartTime = time.AddHours(0.25),
+                    StartTime = DateTime.Now.AddHours(0.25),
                     EndLocation = "Linz/Donau",
-                    EndTime = time.AddHours(1.25),
+                    EndTime = DateTime.Now.AddHours(1.25),
                     Kind = TripKind.OfferedByUser,
                     Provider = "Erika"
                 },
                 new Trip() {
                     StartLocation = "Hagenberg im Mühlkreis",
-                    StartTime = time.AddHours(1),
+                    StartTime = DateTime.Now.AddHours(1),
                     EndLocation = "Linz/Donau",
-                    EndTime = time.AddHours(1.45),
+                    EndTime = DateTime.Now.AddHours(1.45),
                     Kind = TripKind.OfferedByUser,
                     Provider = "Max"
                 }

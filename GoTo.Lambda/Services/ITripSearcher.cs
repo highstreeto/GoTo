@@ -1,4 +1,5 @@
 using GoTo.Lambda.Domain;
+using NodaTime;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,6 +11,6 @@ namespace GoTo.Lambda.Services {
 
         Task<IEnumerable<Destination>> FindDestinationByGeo(double lat, double lon);
 
-        Task<IEnumerable<Trip>> SearchForTripsAsync(string start, string end, DateTime time);
+        Task<IEnumerable<Trip>> SearchForTripsAsync(string start, string end, Instant time);
     }
 }

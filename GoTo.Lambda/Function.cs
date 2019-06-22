@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
 using Newtonsoft.Json;
+using NodaTime;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
@@ -27,11 +28,19 @@ namespace GoTo.Lambda {
 
         private static readonly string geoLocationPermission = "alexa::devices:all:geolocation:read";
 
+        private SettingsClient settingsClient;
+        private ILambdaContext context;
+        private SkillRequest skillRequest;
+        private Session session;
+
         public async Task<SkillResponse> FunctionHandler(SkillRequest input, ILambdaContext context) {
             // Skill currently only in German so set culture statical
             CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("de-DE");
 
-            var session = input.Session;
+            skillRequest = input;
+            this.context = context;
+            settingsClient = new SettingsClient(input);
+            session = input.Session;
             if (session.Attributes == null)
                 session.Attributes = new Dictionary<string, object>();
 
@@ -50,7 +59,7 @@ namespace GoTo.Lambda {
                 context.Logger.LogLine($"Slots {string.Join(";", intent.Slots.Select(s => $"{s.Key}: {s.Value.Value}"))}");
 
                 if (intent.Name == Properties.Resources.TripSearchIntentName) {
-                    if (GetCounter(session, completeFailCounter) >= 3) {
+                    if (GetCounter(completeFailCounter) >= 3) {
                         return ResponseBuilder.Tell(
                             Properties.Speech.CompleteFail
                         );
@@ -84,7 +93,7 @@ namespace GoTo.Lambda {
                     var foundDestinations = await searcher.FindDestinationByName(destination);
 
                     if (foundSources.Count() != 1 && foundDestinations.Count() != 1) {
-                        IncreaseCounter(session, completeFailCounter);
+                        IncreaseCounter(completeFailCounter);
 
                         return ResponseBuilder.AskWithCard(
                             string.Format(Properties.Speech.SourceAndDestinationNotFound, source, destination),
@@ -129,16 +138,16 @@ namespace GoTo.Lambda {
                     }
 
                     var time = DateTime.Now;
-                    return await SearchForTrips(context, input, foundSources.First(), foundDestinations.First(), time);
+                    return await SearchForTrips(foundSources.First(), foundDestinations.First());
                 } else if (intent.Name == Properties.Resources.SpecifyLocationIntentName) {
-                    if (GetCounter(session, locationFailCounter) >= 3) {
+                    if (GetCounter(locationFailCounter) >= 3) {
                         return ResponseBuilder.Tell(
                             Properties.Speech.LocationFail
                         );
                     }
 
-                    var source = GetAttributeAs<Destination>(session, "sourceDst");
-                    var destination = GetAttributeAs<Destination>(session, "destinationDst");
+                    var source = GetAttributeAs<Destination>("sourceDst");
+                    var destination = GetAttributeAs<Destination>("destinationDst");
                     if (source == null && destination == null) {
                         return ResponseBuilder.Ask(
                             Properties.Speech.WrongOrderSpecLoc,
@@ -150,7 +159,7 @@ namespace GoTo.Lambda {
                     var location = locationSlot.Value;
                     var foundLocations = await searcher.FindDestinationByName(location);
                     if (foundLocations.Count() != 1) {
-                        IncreaseCounter(session, locationFailCounter);
+                        IncreaseCounter(locationFailCounter);
 
                         return ResponseBuilder.AskWithCard(
                             string.Format(Properties.Speech.DestinationNotFound, location, foundLocations.First().Name),
@@ -170,7 +179,7 @@ namespace GoTo.Lambda {
                             destination = foundLocations.First();
 
                         var time = DateTime.Now;
-                        return await SearchForTrips(context, input, source, destination, time);
+                        return await SearchForTrips(source, destination);
                     }
                 } else {
                     // TODO Better response for unknown intent
@@ -181,7 +190,7 @@ namespace GoTo.Lambda {
             }
         }
 
-        private T GetAttributeAs<T>(Session session, string attr) {
+        private T GetAttributeAs<T>(string attr) {
             var value = session.Attributes.GetValueOrDefault(attr, null);
             if (value == null)
                 return default(T);
@@ -189,7 +198,7 @@ namespace GoTo.Lambda {
                 return JsonConvert.DeserializeObject<T>(value.ToString());
         }
 
-        private int GetCounter(Session session, string counter) {
+        private int GetCounter(string counter) {
             if (session.Attributes.ContainsKey(counter)) {
                 var value = session.Attributes[counter];
                 Console.WriteLine($"{value} ({value.GetType().Name})");
@@ -201,23 +210,29 @@ namespace GoTo.Lambda {
                 return 0;
         }
 
-        private void IncreaseCounter(Session session, string counter) {
+        private void IncreaseCounter(string counter) {
             if (session.Attributes.ContainsKey(counter)) {
-                session.Attributes[counter] = GetCounter(session, counter) + 1;
+                session.Attributes[counter] = GetCounter(counter) + 1;
             } else {
                 session.Attributes[counter] = 1;
             }
         }
 
-        private async Task<SkillResponse> SearchForTrips(ILambdaContext context, SkillRequest input, Destination start, Destination end, DateTime time) {
+        private async Task<SkillResponse> SearchForTrips(Destination start, Destination end) {
             context.Logger.LogLine($"Start search for {start} -> {end}");
 
-            var response = new ProgressiveResponse(input);
+            var response = new ProgressiveResponse(skillRequest);
             await response.SendSpeech(
                 string.Format(Properties.Speech.SearchingForTrips, start.Name, end.Name)
             );
 
-            var trips = (await searcher.SearchForTripsAsync(start.Name, end.Name, time))
+            // get correct time for user's timezone
+            var instant = SystemClock.Instance.GetCurrentInstant();
+            var timezone = await settingsClient.TimeZone();
+            var london = DateTimeZoneProviders.Tzdb[timezone];
+            var time = instant.InZone(london);
+
+            var trips = (await searcher.SearchForTripsAsync(start.Name, end.Name, time.ToInstant()))
                 .OrderBy(t => t.StartTime)
                 .ThenBy(t => t.Duration)
                 .ToList();
