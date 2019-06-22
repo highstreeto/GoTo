@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Mime;
@@ -18,7 +19,9 @@ namespace GoTo.Lambda.Services {
 
         public async Task<IEnumerable<Destination>> FindDestinationByName(string name) {
             var client = new HttpClient();
-            var response = await client.GetAsync($"{host}/api/destination?name={Uri.EscapeUriString(name)}");
+            var response = await client.GetAsync(
+                $"{host}/api/destination" +
+                $"?name={Uri.EscapeUriString(name)}");
             if (response.IsSuccessStatusCode) {
                 var json = await response.Content.ReadAsStringAsync();
                 Console.WriteLine($"Response success! Got: {json}");
@@ -34,7 +37,10 @@ namespace GoTo.Lambda.Services {
 
         public async Task<IEnumerable<Destination>> FindDestinationByGeo(double lat, double lon) {
             var client = new HttpClient();
-            var response = await client.GetAsync($"{host}/api/destination?lat={lat}&lon={lon}");
+            var response = await client.GetAsync(
+                $"{host}/api/destination" +
+                $"?lat={lat.ToString(CultureInfo.InvariantCulture)}" +
+                $"&lon={lon.ToString(CultureInfo.InvariantCulture)}");
             if (response.IsSuccessStatusCode) {
                 var json = await response.Content.ReadAsStringAsync();
                 Console.WriteLine($"Response success! Got: {json}");
