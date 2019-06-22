@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GoTo.Service.Repositories;
 using System.ComponentModel.DataAnnotations;
+using Optional.Collections;
 
 namespace GoTo.Service.Controllers {
     /// <summary>
@@ -77,9 +78,11 @@ namespace GoTo.Service.Controllers {
             public Option<Domain.TripOffer, string> ToDomain(IDestinationRepository destRepo) {
                 return
                     destRepo.FindByName(StartLocation)
+                    .FirstOrNone()
                     .WithException($"Start location '{StartLocation}' could not matched!")
                     .FlatMap(start =>
                         destRepo.FindByName(EndLocation)
+                        .FirstOrNone()
                         .WithException($"End location '{EndLocation}' could not matched!")
                         .Map(end => new Domain.TripOffer(StarTime, start,
                             EndTime - StarTime, end,

@@ -1,6 +1,7 @@
 using GoTo.Service.Repositories;
 using GoTo.Service.Services;
 using Microsoft.AspNetCore.Mvc;
+using Optional.Collections;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -66,8 +67,8 @@ namespace GoTo.Service.Controllers {
             public Services.TripSearchRequest ToService(IDestinationRepository repo) {
                 return new TripSearchRequest(
                     // TODO Refactor
-                    repo.FindByName(StartLocation).ValueOr((Domain.Destination)null),
-                    repo.FindByName(EndLocation).ValueOr((Domain.Destination)null),
+                    repo.FindByName(StartLocation).FirstOrNone().ValueOr((Domain.Destination)null),
+                    repo.FindByName(EndLocation).FirstOrNone().ValueOr((Domain.Destination)null),
                     StartTime
                 );
             }
