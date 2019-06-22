@@ -1,6 +1,6 @@
 branch-defaults:
   master:
-    environment: GoToService-dev
+    environment: null
     group_suffix: null
 deploy:
   artifact: dist.zip
