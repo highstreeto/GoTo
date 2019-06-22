@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Mime;
 using System.Text;
@@ -31,19 +32,19 @@ namespace GoTo.Lambda.Services {
             }
         }
 
-        public async Task<Destination> FindDestinationByGeo(double lat, double lon) {
+        public async Task<IEnumerable<Destination>> FindDestinationByGeo(double lat, double lon) {
             var client = new HttpClient();
             var response = await client.GetAsync($"{host}/api/destination?lat={lat}&lon={lon}");
             if (response.IsSuccessStatusCode) {
                 var json = await response.Content.ReadAsStringAsync();
                 Console.WriteLine($"Response success! Got: {json}");
 
-                var result = JsonConvert.DeserializeObject<Destination>(json);
+                var result = JsonConvert.DeserializeObject<Destination[]>(json);
                 return result;
             } else {
                 Console.WriteLine($"Response for {nameof(FindDestinationByGeo)} was unsuccessful! Code: {response.StatusCode}, Error: {await response.Content.ReadAsStringAsync()}");
                 // TODO Better error handling
-                return null;
+                return new Destination[] { };
             }
         }
 

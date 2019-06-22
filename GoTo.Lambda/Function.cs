@@ -67,10 +67,10 @@ namespace GoTo.Lambda {
                                 session
                             );
                         } else {
-                            foundSources = new[] { await searcher.FindDestinationByGeo(
+                            foundSources = await searcher.FindDestinationByGeo(
                                 input.Context.Geolocation.Coordinate.Latitude,
                                 input.Context.Geolocation.Coordinate.Longitude
-                            )};
+                            );
                         }
                     } else {
                         foundSources = await searcher.FindDestinationByName(source);
