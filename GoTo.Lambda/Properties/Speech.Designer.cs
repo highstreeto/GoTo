@@ -133,7 +133,7 @@ namespace GoTo.Lambda.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Um deinen Startort zu ermitteln, brauche ich Zugriff auf deine Standortdaten. Folge den Anweisungen von Alexa, um diese zu aktivieren..
+        ///   Looks up a localized string similar to Um deinen Standort zu ermitteln, brauche ich Zugriff auf deine Standortdaten. Folge den Anweisungen von Alexa, um diese zu aktivieren..
         /// </summary>
         internal static string RequestGeoLocation {
             get {
