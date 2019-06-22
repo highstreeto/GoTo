@@ -97,6 +97,16 @@ namespace GoTo.Lambda {
                     var time = DateTime.Now;
                     return await SearchForTrips(context, input, foundSources.First(), foundDestinations.First(), time);
                 } else if (intent.Name == Properties.Resources.SpecifyLocationIntentName) {
+                    var source = session.Attributes.GetValueOrDefault("sourceDst", null);
+                    var destination = session.Attributes.GetValueOrDefault("destinationDst", null);
+                    if (source == null && destination == null) {
+                        return ResponseBuilder.Ask(
+                            Properties.Speech.WrongOrderSpecLoc,
+                            null
+                        );
+                    }
+                    context.Logger.LogLine($"{source} ({source?.GetType().Name}) => {destination} ({destination?.GetType().Name})");
+
                     return ResponseBuilder.Tell("WIP");
                 } else {
                     // TODO Better response for unknown intent

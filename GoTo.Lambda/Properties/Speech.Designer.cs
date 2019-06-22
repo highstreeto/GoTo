@@ -196,5 +196,14 @@ namespace GoTo.Lambda.Properties {
                 return ResourceManager.GetString("StarterTitle", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Du musst Start- und Zielort zuerst angeben, damit ich nach Verbindungen suchen kann..
+        /// </summary>
+        internal static string WrongOrderSpecLoc {
+            get {
+                return ResourceManager.GetString("WrongOrderSpecLoc", resourceCulture);
+            }
+        }
     }
 }

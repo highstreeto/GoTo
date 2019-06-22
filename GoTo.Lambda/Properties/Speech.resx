@@ -164,4 +164,7 @@ Nächste Verbindung von Wien nach Linz?</value>
   <data name="StarterTitle" xml:space="preserve">
     <value>GoTo - Fahren mit Öffis oder Mitfahren</value>
   </data>
+  <data name="WrongOrderSpecLoc" xml:space="preserve">
+    <value>Du musst Start- und Zielort zuerst angeben, damit ich nach Verbindungen suchen kann.</value>
+  </data>
 </root>
