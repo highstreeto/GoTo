@@ -142,7 +142,7 @@
     <value>Ich kenne den Ort {0} leider nicht.  Versuch es bitte noch einmal.</value>
   </data>
   <data name="Starter" xml:space="preserve">
-    <value>Mit GoTo kannst du fragen, wie du an dein Ziel gelangst mit Öffis oder Mitfahrgelegenheiten. Zum Beispiel kannst du fragen: Wie komme ich nach Hagenberg?</value>
+    <value>Mit GoTo kannst du fragen, wie du an dein Ziel gelangst mit Öffis oder Mitfahrgelegenheiten. </value>
   </data>
   <data name="StarterContent" xml:space="preserve">
     <value>Beispielfragen:
@@ -151,5 +151,8 @@ Nächste Verbindung von Wien nach Linz?</value>
   </data>
   <data name="StarterTitle" xml:space="preserve">
     <value>GoTo - Fahren mit Öffis oder Mitfahren</value>
+  </data>
+  <data name="UnknownDestinationTitle" xml:space="preserve">
+    <value>Nicht erkannte Orte</value>
   </data>
 </root>

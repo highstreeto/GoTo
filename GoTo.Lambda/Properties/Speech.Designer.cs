@@ -133,7 +133,7 @@ namespace GoTo.Lambda.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mit GoTo kannst du fragen, wie du an dein Ziel gelangst mit Öffis oder Mitfahrgelegenheiten. Zum Beispiel kannst du fragen: Wie komme ich nach Hagenberg?.
+        ///   Looks up a localized string similar to Mit GoTo kannst du fragen, wie du an dein Ziel gelangst mit Öffis oder Mitfahrgelegenheiten. .
         /// </summary>
         internal static string Starter {
             get {
@@ -158,6 +158,15 @@ namespace GoTo.Lambda.Properties {
         internal static string StarterTitle {
             get {
                 return ResourceManager.GetString("StarterTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nicht erkannte Orte.
+        /// </summary>
+        internal static string UnknownDestinationTitle {
+            get {
+                return ResourceManager.GetString("UnknownDestinationTitle", resourceCulture);
             }
         }
     }

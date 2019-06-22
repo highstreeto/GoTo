@@ -45,60 +45,69 @@ namespace GoTo.Lambda {
                     var foundDestination = await searcher.FindDestinationByName(destination);
 
                     if (!foundSource.Any() && !foundDestination.Any()) {
-                        return ResponseBuilder.Ask(
+                        return ResponseBuilder.AskWithCard(
                             string.Format(Properties.Speech.SourceAndDestinationNotFound, source, destination),
+                            Properties.Speech.UnknownDestinationTitle,
+                            string.Format("Die Orte {0} und {1} kenne ich nicht", source, destination),
                             null
                         );
                     } else if (!foundSource.Any()) {
-                        return ResponseBuilder.Ask(
+                        return ResponseBuilder.AskWithCard(
                             string.Format(Properties.Speech.SourceNotFound, source),
+                            Properties.Speech.UnknownDestinationTitle,
+                            string.Format("Den Startort {0} kenne ich nicht", source),
                             null
                         );
                     } else if (!foundDestination.Any()) {
-                        return ResponseBuilder.Ask(
+                        return ResponseBuilder.AskWithCard(
                             string.Format(Properties.Speech.DestinationNotFound, destination),
+                            Properties.Speech.UnknownDestinationTitle,
+                            string.Format("Den Zielort {0} kenne ich nicht", destination),
                             null
                         );
                     }
 
                     var time = DateTime.Now;
-
-                    context.Logger.LogLine($"Start search for {source} -> {destination}");
-
-                    var response = new ProgressiveResponse(input);
-                    await response.SendSpeech(Properties.Speech.SearchingForTrips);
-
-                    var trips = (await searcher.SearchForTripsAsync(source, destination, time))
-                        .OrderBy(t => t.StartTime)
-                        .ThenBy(t => t.Duration)
-                        .ToList();
-                    context.Logger.LogLine($"Finish search for {source} -> {destination}: Found {trips.Count()}, Best: {trips.FirstOrDefault()}");
-
-                    if (trips.Any()) {
-                        var bestTrip = trips.First();
-                        return ResponseBuilder.TellWithCard(
-                            string.Format(Properties.Speech.FoundBestTrip,
-                                bestTrip.StartLocation, bestTrip.EndLocation,
-                                bestTrip.StartTime.ToString("HH:mm"),
-                                bestTrip.Provider),
-                            string.Format(Properties.Speech.FoundTripsTitle,
-                                bestTrip.StartLocation,
-                                bestTrip.EndLocation),
-                            BuildTripsCard(trips)
-                        );
-                    } else {
-                        return ResponseBuilder.TellWithCard(
-                            string.Format(Properties.Speech.NoTripsFound, source, destination),
-                            string.Format(Properties.Speech.NoTripsFound, source, destination),
-                            ""
-                        );
-                    }
+                    return await SearchForTrips(context, input, foundSource.First(), foundDestination.First(), time);
                 } else {
                     // TODO Better response for unknown intent
                     return ResponseBuilder.Tell(Properties.Speech.InvalidRequest);
                 }
             } else {
                 return ResponseBuilder.Tell(Properties.Speech.InvalidRequest);
+            }
+        }
+
+        private async Task<SkillResponse> SearchForTrips(ILambdaContext context, SkillRequest input, Destination start, Destination end, DateTime time) {
+            context.Logger.LogLine($"Start search for {start} -> {end}");
+
+            var response = new ProgressiveResponse(input);
+            await response.SendSpeech(Properties.Speech.SearchingForTrips);
+
+            var trips = (await searcher.SearchForTripsAsync(start.Name, end.Name, time))
+                .OrderBy(t => t.StartTime)
+                .ThenBy(t => t.Duration)
+                .ToList();
+            context.Logger.LogLine($"Finish search for {start} -> {end}: Found {trips.Count()}, Best: {trips.FirstOrDefault()}");
+
+            if (trips.Any()) {
+                var bestTrip = trips.First();
+                return ResponseBuilder.TellWithCard(
+                    string.Format(Properties.Speech.FoundBestTrip,
+                        bestTrip.StartLocation, bestTrip.EndLocation,
+                        bestTrip.StartTime.ToString("HH:mm"),
+                        bestTrip.Provider),
+                    string.Format(Properties.Speech.FoundTripsTitle,
+                        bestTrip.StartLocation,
+                        bestTrip.EndLocation),
+                    BuildTripsCard(trips)
+                );
+            } else {
+                return ResponseBuilder.TellWithCard(
+                    string.Format(Properties.Speech.NoTripsFound, start.Name, end.Name),
+                    string.Format(Properties.Speech.NoTripsFound, start.Name, end.Name),
+                    ""
+                );
             }
         }
 
