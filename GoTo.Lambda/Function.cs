@@ -276,13 +276,14 @@ namespace GoTo.Lambda {
         }
 
         private string BuildTripsCard(IEnumerable<Trip> trips) {
+            string sep = new string('-', 40);
             var content = new StringBuilder();
             foreach (var trip in trips) {
                 content.AppendLine(
                     $"Von {trip.StartLocation} ({trip.StartTime.ToString("HH:mm")})\n" +
                     $"Nach {trip.EndLocation} ({trip.EndTime.ToString("HH:mm")})\n" +
-                    $"Dauer: {trip.Duration.TotalHours:F2} h / Mit: {trip.Provider}");
-                content.AppendLine("-------------");
+                    $"Dauer: {trip.Duration.ToString("HH:mm")} / Mit: {trip.Provider}");
+                content.AppendLine(sep);
             }
             return content.ToString();
         }
