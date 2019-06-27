@@ -43,6 +43,11 @@ namespace GoTo.Service.Controllers {
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
         public IActionResult Add([FromBody] TripOffer offer) {
+            if (offer.StarTime <= DateTime.Now || offer.EndTime <= DateTime.Now)
+                return BadRequest("Start and end time must be in the future!");
+            if (offer.StarTime >= offer.EndTime)
+                return BadRequest("Start time must be after end time!");
+
             var domain = offer.ToDomain(destRepo);
             return domain.Match<IActionResult>(
                 some: o => {

@@ -18,6 +18,7 @@ namespace GoTo.Service.Domain {
         public Destination StartLocation { get; set; }
 
         public TimeSpan EstimatedDuration { get; }
+        public DateTime EndTime => StartTime + EstimatedDuration;
         public Destination EndLocation { get; set; }
     }
 

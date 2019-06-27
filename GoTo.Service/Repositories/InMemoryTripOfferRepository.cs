@@ -13,7 +13,10 @@ namespace GoTo.Service.Repositories {
         }
 
         public IEnumerable<TripOffer> Query()
-            => offers;
+            => offers
+            .Where(o
+                => o.StartTime >= DateTime.Now
+            );
 
         public void Add(TripOffer offer) {
             offers.Add(offer);
