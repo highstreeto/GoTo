@@ -6,7 +6,7 @@ date: 27.06.2019
 lang: de-DE
 ---
 
-# Problem Statement
+# Problem
 
 * Mitfahrten nicht einfach zu finden
 * Keine einheitliche Suche mit Öffis
@@ -23,6 +23,8 @@ lang: de-DE
 
 # Ergebnisse
 
+
+
 # Demo
 
 **Web-Oberfläche**
@@ -34,3 +36,21 @@ lang: de-DE
 ---
 
 ![Fahrt anlegen](goto-client-newtrip.png)
+
+---
+
+![Neue Fahrt anlegen](goto-client-newtrip.png)
+
+# Demo
+
+**Alexa-Skill**
+
+---
+
+[Fahrtensuche mit Geo-Location](goto-alexa-geo.mp4)
+
+(leider ohne Ton, da Android das Aufnehmen vom internen Audio nicht zulässt)
+
+---
+
+[Fahrtensuche ohne Geo-Location](goto-alexa-nogeo.mp4)
