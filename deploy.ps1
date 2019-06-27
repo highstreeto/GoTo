@@ -1,6 +1,7 @@
 scoop install zip
 
 if (Test-Path dist.zip) { Remove-Item dist.zip }
+if (Test-Path dist/) { Remove-Item -Recurse dist/ }
 
 New-Item -ItemType Directory dist/
 Copy-Item Dockerfile-eb dist/Dockerfile

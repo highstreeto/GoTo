@@ -24,3 +24,13 @@ lang: de-DE
 # Ergebnisse
 
 # Demo
+
+**Web-Oberfläche**
+
+---
+
+![[GoTo](http://goto.eu-west-1.elasticbeanstalk.com/) aufrufen](goto-client-welcome.png)
+
+---
+
+![Fahrt anlegen](goto-client-newtrip.png)
