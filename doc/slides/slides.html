@@ -39,7 +39,8 @@
   <p class="date">27.06.2019</p>
 </section>
 
-<section id="problem" class="title-slide slide level1"><h1>Problem</h1><p>Mitfahrten nicht einfach zu finden Keine einheitliche Suche mit Öffis</p></section>
+<section id="problem" class="title-slide slide level1"><h1>Problem</h1><p>Mitfahrten nicht einfach zu finden</p>
+<p>Keine einheitliche Suche mit Öffis</p></section>
 <section><section id="lösungsansatz" class="title-slide slide level1"><h1>Lösungsansatz</h1><figure>
 <img data-src="GoTo-Overview.svg" alt="Systemüberblick" /><figcaption>Systemüberblick</figcaption>
 </figure></section><section id="erläuterung" class="slide level2">
@@ -93,9 +94,10 @@ Benützt <a href="https://github.com/timheuer/alexa-skills-dotnet">Alexa Skills 
 </ol>
 </div>
 </section></section>
-<section><section id="goto.lambda" class="title-slide slide level1"><h1>GoTo.Lambda</h1><p><strong>Schnittselle</strong> für Alexa</p>
+<section><section id="goto.lambda" class="title-slide slide level1"><h1>GoTo.Lambda</h1><p><strong>Schnittselle</strong> für den Alexa-Skill</p>
 <p>Kann auch über <em>Location Services</em> den aktuellen Standort bestimmen</p>
-<p>Bestes Ergebnis wird vorgelesen, die Anderen sind als <em>Card</em> sichtbar.</p></section><section id="intents" class="slide level2">
+<p>Muss die Zeitzone des Benutzers abfragen, um richtige Anfragen stellen zu können</p>
+<p>Bestes Ergebnis wird vorgelesen, die Anderen sind als <em>Card</em> sichtbar</p></section><section id="intents" class="slide level2">
 <h2>Intents</h2>
 <ul>
 <li>TripSearchIntent

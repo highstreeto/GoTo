@@ -10,6 +10,7 @@ slideNumber: true
 # Problem
 
 Mitfahrten nicht einfach zu finden
+
 Keine einheitliche Suche mit Öffis
 
 # Lösungsansatz
@@ -70,11 +71,13 @@ Google Maps - Einbindung war angedacht, es ist aber eine Kreditkarte (keine Prep
 
 # GoTo.Lambda
 
-**Schnittselle** für Alexa
+**Schnittselle** für den Alexa-Skill
 
 Kann auch über *Location Services* den aktuellen Standort bestimmen
 
-Bestes Ergebnis wird vorgelesen, die Anderen sind als *Card* sichtbar.
+Muss die Zeitzone des Benutzers abfragen, um richtige Anfragen stellen zu können
+
+Bestes Ergebnis wird vorgelesen, die Anderen sind als *Card* sichtbar
 
 ## Intents
 
