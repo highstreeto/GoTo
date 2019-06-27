@@ -28,9 +28,9 @@
         </thead>
         <tbody>
           <tr *ngFor="let trip of currentTrips">
-            <td>{{ trip.starTime }}</td>
+            <td>{{ trip.starTime | date : 'dd.MM.yyyy HH:mm' }}</td>
             <td>{{ trip.startLocation }}</td>
-            <td>{{ trip.endTime }}</td>
+            <td>{{ trip.endTime | date : 'dd.MM.yyyy HH:mm' }}</td>
             <td>{{ trip.endLocation }}</td>
             <td>{{ trip.offeredBy }}</td>
           </tr>
