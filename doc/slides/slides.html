@@ -39,21 +39,80 @@
   <p class="date">27.06.2019</p>
 </section>
 
-<section id="problem-statement" class="title-slide slide level1"><h1>Problem Statement</h1><ul>
-<li>Mitfahrten nicht einfach zu finden</li>
-<li>Keine einheitliche Suche mit Öffis</li>
-</ul></section>
+<section id="problem" class="title-slide slide level1"><h1>Problem</h1><p>Mitfahrten nicht einfach zu finden Keine einheitliche Suche mit Öffis</p></section>
 <section><section id="lösungsansatz" class="title-slide slide level1"><h1>Lösungsansatz</h1><figure>
 <img data-src="GoTo-Overview.svg" alt="Systemüberblick" /><figcaption>Systemüberblick</figcaption>
-</figure></section><section class="slide level2">
-
+</figure></section><section id="erläuterung" class="slide level2">
+<h2>Erläuterung</h2>
 <ul>
 <li>Alexa-Skill: Frontend für die Suche</li>
 <li>Angular-App: Frontend für das Eintragen der Fahrten</li>
 <li>ASP.NET Core: Backend für das Speichern der Fahrten und Suchen nach Öffi-Verbindungen</li>
 </ul>
 </section></section>
-<section id="ergebnisse" class="title-slide slide level1"><h1>Ergebnisse</h1></section>
+<section><section id="goto.service" class="title-slide slide level1"><h1>GoTo.Service</h1><p><strong>Zentrale</strong> Schnittstelle für Angular und den Alexa Skill</p>
+<p class="fragment">
+Konfigurierbare Liste von Zielorten mit ihren Geo-Koordinaten
+</p>
+<p class="fragment">
+Speichert Mitfahrten und sucht nach Verbindungen mit öffentlichen Verkehrsmitteln
+</p>
+<p class="fragment">
+Abfrage von Orten über Name oder Geo-Koordinaten
+</p>
+<p class="fragment">
+Benützt <a href="https://github.com/timheuer/alexa-skills-dotnet">Alexa Skills SDK for .NET</a>
+</p></section><section id="rest" class="slide level2">
+<h2>REST</h2>
+<figure>
+<img data-src="goto-service-swagger.png" alt="Swagger-UI der Schnittselle" /><figcaption>Swagger-UI der Schnittselle</figcaption>
+</figure>
+</section><section id="suche-nach-fahrten" class="slide level2">
+<h2>Suche nach Fahrten</h2>
+<p>Orte werden fuzzy gesucht. Es reicht dann aber eine exakte Suche.</p>
+<p>Fahrten-Suche: zuerst bei den angeboteten Fahrten dann bei den öffentliche Verkehrsmitteln.</p>
+<p>Google Maps - Einbindung war angedacht, es ist aber eine Kreditkarte (keine Prepaid) notwendig.</p>
+</section><section id="abfrage-von-orten-per-name" class="slide level2">
+<h2>Abfrage von Orten per Name</h2>
+<div>
+<ol type="1">
+<li class="fragment">Entspricht der Ort einem bekannten Ort? (Groß-/Kleinschreibung irrelevant) -&gt; wenn ja, Match</li>
+<li class="fragment">Ist er in einem bekannten Ort enthalten? -&gt; wenn ja, Match</li>
+<li class="fragment">Berechnung der <em>Levenshtein</em>-Distanz für alle Orte</li>
+<li class="fragment">Sortieren nach Distanz und unter 2? -&gt; wenn ja, Match</li>
+<li class="fragment">Liefere alle Orte sortiert nach der <em>Levenshtein</em>-Distanz</li>
+</ol>
+</div>
+</section><section id="abfrage-von-orten-per-geo-koordinaten" class="slide level2">
+<h2>Abfrage von Orten per Geo-Koordinaten</h2>
+<div>
+<ol type="1">
+<li class="fragment">Berechne Distanz zwischen aktuellen Standort und bekannten Standorten</li>
+<li class="fragment">Alle Orten weiter als 100 km entfernt, werden aussortiert</li>
+<li class="fragment">Bester Match nach Distanz wird herangezogen</li>
+</ol>
+</div>
+</section></section>
+<section><section id="goto.lambda" class="title-slide slide level1"><h1>GoTo.Lambda</h1><p><strong>Schnittselle</strong> für Alexa</p>
+<p>Kann auch über <em>Location Services</em> den aktuellen Standort bestimmen</p>
+<p>Bestes Ergebnis wird vorgelesen, die Anderen sind als <em>Card</em> sichtbar.</p></section><section id="intents" class="slide level2">
+<h2>Intents</h2>
+<ul>
+<li>TripSearchIntent
+<ul>
+<li>Slot <code>Source</code> (AMAZON.City)</li>
+<li>Slot <code>Destination</code> (AMAZON.City)</li>
+</ul></li>
+<li>SpecifyLocationIntent
+<ul>
+<li>Slot <code>Location</code> (AMAZON.City)</li>
+</ul></li>
+</ul>
+</section><section id="fehlerbehandlung" class="slide level2">
+<h2>Fehlerbehandlung</h2>
+<p>Ziel oder Startort nicht erkannt: <code>SpecifyLocationIntent</code> mit dem fehlenden Ort</p>
+<p>Für Ort, wird höchsten 3-mal nachgefragt. Bei Überschritten wird die Konversation zurückgesetzt (Eigener Counter als Session-Attribute).</p>
+</section></section>
 <section><section id="demo" class="title-slide slide level1"><h1>Demo</h1><p><strong>Web-Oberfläche</strong></p></section><section class="slide level2">
 
 <figure>
@@ -67,16 +126,18 @@
 </section><section class="slide level2">
 
 <figure>
-<img data-src="goto-client-newtrip.png" alt="Neue Fahrt anlegen" /><figcaption>Neue Fahrt anlegen</figcaption>
+<img data-src="goto-client-newtrip-added.png" alt="Neue Fahrt bewundern" /><figcaption>Neue Fahrt bewundern</figcaption>
 </figure>
 </section></section>
 <section><section id="demo-1" class="title-slide slide level1"><h1>Demo</h1><p><strong>Alexa-Skill</strong></p></section><section class="slide level2">
 
 <p><a href="goto-alexa-geo.mp4">Fahrtensuche mit Geo-Location</a></p>
+<p>(leider ohne Ton, da Android das Aufnehmen vom internen Audio nicht zulässt)</p>
 </section><section class="slide level2">
 
 <p><a href="goto-alexa-nogeo.mp4">Fahrtensuche ohne Geo-Location</a></p>
 </section></section>
+<section id="vielen-dank-für-eure-aufmerksamkeit" class="title-slide slide level1"><h1>Vielen Dank für eure Aufmerksamkeit!</h1></section>
     </div>
   </div>
 
@@ -88,6 +149,8 @@
       // Full list of configuration options available at:
       // https://github.com/hakimel/reveal.js#configuration
       Reveal.initialize({
+        // Display the page number of the current slide
+        slideNumber: true,
         // Push each slide change to the browser history
         history: true,
 
