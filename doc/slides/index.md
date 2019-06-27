@@ -11,7 +11,7 @@ slideNumber: true
 
 Mitfahrten nicht einfach zu finden
 
-Keine einheitliche Suche mit Öffis
+Keine vereinte Suche mit öffentlichen Verkehrsmittel
 
 # Lösungsansatz
 
@@ -32,8 +32,6 @@ Keine einheitliche Suche mit Öffis
 <p class="fragment">Speichert Mitfahrten und sucht nach Verbindungen mit öffentlichen Verkehrsmitteln</p>
 
 <p class="fragment">Abfrage von Orten über Name oder Geo-Koordinaten</p>
-
-<p class="fragment">Benützt [Alexa Skills SDK for .NET](https://github.com/timheuer/alexa-skills-dotnet)</p>
 
 ## REST
 
@@ -79,6 +77,8 @@ Muss die Zeitzone des Benutzers abfragen, um richtige Anfragen stellen zu könne
 
 Bestes Ergebnis wird vorgelesen, die Anderen sind als *Card* sichtbar
 
+Benützt [Alexa Skills SDK for .NET](https://github.com/timheuer/alexa-skills-dotnet)
+
 ## Intents
 
 * TripSearchIntent
@@ -107,7 +107,7 @@ Für Ort, wird höchsten 3-mal nachgefragt. Bei Überschritten wird die Konversa
 
 ---
 
-![Neue Fahrt bewundern](goto-client-newtrip-added.png)
+![Neue Fahrt sichtbar in der Welcome-Seite](goto-client-newtrip-added.png)
 
 # Demo
 

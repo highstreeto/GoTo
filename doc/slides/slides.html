@@ -40,7 +40,7 @@
 </section>
 
 <section id="problem" class="title-slide slide level1"><h1>Problem</h1><p>Mitfahrten nicht einfach zu finden</p>
-<p>Keine einheitliche Suche mit Öffis</p></section>
+<p>Keine vereinte Suche mit öffentlichen Verkehrsmittel</p></section>
 <section><section id="lösungsansatz" class="title-slide slide level1"><h1>Lösungsansatz</h1><figure>
 <img data-src="GoTo-Overview.svg" alt="Systemüberblick" /><figcaption>Systemüberblick</figcaption>
 </figure></section><section id="erläuterung" class="slide level2">
@@ -60,9 +60,6 @@ Speichert Mitfahrten und sucht nach Verbindungen mit öffentlichen Verkehrsmitte
 </p>
 <p class="fragment">
 Abfrage von Orten über Name oder Geo-Koordinaten
-</p>
-<p class="fragment">
-Benützt <a href="https://github.com/timheuer/alexa-skills-dotnet">Alexa Skills SDK for .NET</a>
 </p></section><section id="rest" class="slide level2">
 <h2>REST</h2>
 <figure>
@@ -97,7 +94,8 @@ Benützt <a href="https://github.com/timheuer/alexa-skills-dotnet">Alexa Skills 
 <section><section id="goto.lambda" class="title-slide slide level1"><h1>GoTo.Lambda</h1><p><strong>Schnittselle</strong> für den Alexa-Skill</p>
 <p>Kann auch über <em>Location Services</em> den aktuellen Standort bestimmen</p>
 <p>Muss die Zeitzone des Benutzers abfragen, um richtige Anfragen stellen zu können</p>
-<p>Bestes Ergebnis wird vorgelesen, die Anderen sind als <em>Card</em> sichtbar</p></section><section id="intents" class="slide level2">
+<p>Bestes Ergebnis wird vorgelesen, die Anderen sind als <em>Card</em> sichtbar</p>
+<p>Benützt <a href="https://github.com/timheuer/alexa-skills-dotnet">Alexa Skills SDK for .NET</a></p></section><section id="intents" class="slide level2">
 <h2>Intents</h2>
 <ul>
 <li>TripSearchIntent
@@ -128,7 +126,7 @@ Benützt <a href="https://github.com/timheuer/alexa-skills-dotnet">Alexa Skills 
 </section><section class="slide level2">
 
 <figure>
-<img data-src="goto-client-newtrip-added.png" alt="Neue Fahrt bewundern" /><figcaption>Neue Fahrt bewundern</figcaption>
+<img data-src="goto-client-newtrip-added.png" alt="Neue Fahrt sichtbar in der Welcome-Seite" /><figcaption>Neue Fahrt sichtbar in der Welcome-Seite</figcaption>
 </figure>
 </section></section>
 <section><section id="demo-1" class="title-slide slide level1"><h1>Demo</h1><p><strong>Alexa-Skill</strong></p></section><section class="slide level2">
