@@ -1,0 +1,7 @@
+@startuml goto-service-arch
+
+class Destination {
+    
+}
+
+@enduml
