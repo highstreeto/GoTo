@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="de-DE">
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Martin Hochstrasser">
+  <title>GoTo</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="reveal.js/css/reveal.css">
+  <style>
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="reveal.js/css/theme/black.css" id="theme">
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'reveal.js/css/print/pdf.css' : 'reveal.js/css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <!--[if lt IE 9]>
+  <script src="reveal.js/lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">GoTo</h1>
+  <p class="subtitle">Alexa-Skill für Suche von Öffi-Verbindungen und Mitfahrten</p>
+  <p class="author">Martin Hochstrasser</p>
+  <p class="date">27.06.2019</p>
+</section>
+
+<section id="problem-statement" class="title-slide slide level1"><h1>Problem Statement</h1><ul>
+<li>Mitfahrten nicht einfach zu finden</li>
+<li>Keine einheitliche Suche mit Öffis</li>
+</ul></section>
+<section><section id="lösungsansatz" class="title-slide slide level1"><h1>Lösungsansatz</h1><figure>
+<img data-src="GoTo-Overview.svg" alt="Systemüberblick" /><figcaption>Systemüberblick</figcaption>
+</figure></section><section class="slide level2">
+
+<ul>
+<li>Alexa-Skill: Frontend für die Suche</li>
+<li>Angular-App: Frontend für das Eintragen der Fahrten</li>
+<li>ASP.NET Core: Backend für das Speichern der Fahrten und Suchen nach Öffi-Verbindungen</li>
+</ul>
+</section></section>
+<section id="ergebnisse" class="title-slide slide level1"><h1>Ergebnisse</h1></section>
+<section id="demo" class="title-slide slide level1"><h1>Demo</h1></section>
+    </div>
+  </div>
+
+  <script src="reveal.js/lib/js/head.min.js"></script>
+  <script src="reveal.js/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Push each slide change to the browser history
+        history: true,
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true },
+          { src: 'reveal.js/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+    </body>
+</html>
