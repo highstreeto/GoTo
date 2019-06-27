@@ -1,0 +1,11 @@
+@startuml goto-client-arch
+
+interface ITripSearcher {
+    
+}
+
+class WelcomeComponent {
+    
+}
+
+@enduml

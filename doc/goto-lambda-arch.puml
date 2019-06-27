@@ -1,0 +1,7 @@
+@startuml goto-lambda-arch
+
+interface ITripSearcher {
+    
+}
+
+@enduml
