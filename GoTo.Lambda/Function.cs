@@ -61,7 +61,7 @@ namespace GoTo.Lambda {
                 context.Logger.LogLine($"Slots {string.Join(";", intent.Slots.Select(s => $"{s.Key}: {s.Value.Value}"))}");
 
                 if (intent.Name == Properties.Resources.TripSearchIntentName) {
-                    if (GetCounter(completeFailCounter) >= 3) {
+                    if (GetCounter(completeFailCounter) >= 2) {
                         return ResponseBuilder.Tell(
                             Properties.Speech.CompleteFail
                         );
@@ -151,7 +151,7 @@ namespace GoTo.Lambda {
                     var time = DateTime.Now;
                     return await SearchForTrips(foundSources.First(), foundDestinations.First());
                 } else if (intent.Name == Properties.Resources.SpecifyLocationIntentName) {
-                    if (GetCounter(locationFailCounter) >= 3) {
+                    if (GetCounter(locationFailCounter) >= 2) {
                         return ResponseBuilder.Tell(
                             Properties.Speech.LocationFail
                         );
