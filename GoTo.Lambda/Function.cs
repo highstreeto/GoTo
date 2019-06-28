@@ -276,7 +276,7 @@ namespace GoTo.Lambda {
         }
 
         private string BuildTripsCard(IEnumerable<Trip> trips) {
-            string sep = new string('-', 40);
+            string sep = new string('-', 25);
             var content = new StringBuilder();
             foreach (var trip in trips) {
                 content.AppendLine(
