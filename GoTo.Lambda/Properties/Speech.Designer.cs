@@ -115,7 +115,7 @@ namespace GoTo.Lambda.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ich verstehte dich leider nicht korrekt. Versuche es vielleicht in einer anderen Umgebung nocheinaml?.
+        ///   Looks up a localized string similar to Ich verstehe dich leider nicht korrekt. Versuche es vielleicht in einer anderen Umgebung nocheinaml?.
         /// </summary>
         internal static string LocationFail {
             get {
