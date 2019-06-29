@@ -1,19 +1,42 @@
 ---
-title: GoTo - Technische Dokumentation
+title: GoTo - Dokumentation
 author: Martin Hochstrasser
 date: 27.06.2019
 lang: de-DE
 toc: true
 colorlinks: true
+geometry:
+- margin=3cm
 ---
 
-# GoTo.Service
+# Problem
+
+Mitfahrten sind nicht einfach zu finden, da sie nur in einem kleineren Kreis bekannt sind oder nur wenige öffentlich bekannt gegeben werden (Facebook FH Mitfahrbörse). 
+
+Keine vereinte Suche mit öffentlichen Verkehrsmittel, wenn es zum aktuellen Zeitpunkt keine Mitfahrmöglichkeit angeboten werden.
+
+# Lösungsansatz
+
+Ein Alexa-Skill dient als zentraler Punkt zur Abfrage von Mitfahremöglichkeiten und öffentlichen Verbindungen. Dieser greift auf einen eigenen Service zu, dass die Suche nach Fahrten übernimmt. Dieses Service stellt auch eine Web-Oberfläche zur Verfugung, über der neue Mitfahrten eingetragen werden können. All diese Applikationen sollen in der Cloud gehostet werden, damit diese leicht erreichbar sind.
+
+![System-Architektur von GoTo](goto-overview.png)
+
+# Implementierung
+
+Folgende Applikationen sind implementiert:
+
+| Name         | Technologie | Kurzbeschreibung                                                        |
+| ------------ | ----------- | ----------------------------------------------------------------------- |
+| GoTo.Service | .NET Core   | Backend für das Speichern der Fahrten und Suchen nach Öffi-Verbindungen |
+| GoTo.Lambda  | .NET Core   | Backend des Alexa-Skill                                                 |
+| GoTo.Client  | Angular     | Frontend für das Eintragen der Fahrten                                  |
+| GoTo.Alexa   | Alexa-Skill | Frontend für die Suche                                                  |
+
+## GoTo.Service
 
 Die zentrale Schnittselle von *GoTo* ist mithilfe von ASP.NET Core implementiert. Der Service wird auf *AWS Elastic Beanstalk* deployt als Docker-Container. Die Mitfahrten werden *In-Memory* gespeichert, da sie nur bis zur Startzeit gültig sind.
 
-`\pagebreak`{=latex}
-
-## Architektur
+### Architektur
 
 ```{=latex}
 \begin{figure}[h!]
@@ -22,13 +45,15 @@ Die zentrale Schnittselle von *GoTo* ist mithilfe von ASP.NET Core implementiert
 \end{figure}
 ```
 
-## REST-Schnittstelle
+`\pagebreak`{=latex}
+
+### REST-Schnittstelle
 
 ![REST-Schnittstelle von *GoTo.Service*](goto-service-swagger.png)
 
-## Deployment
+### Deployment
 
-Das Deployment auf *Bean Stalk* erfolgt in folgenden Schritten:
+Das Deployment auf *AWS Bean Stalk* erfolgt in folgenden Schritten:
 
 1. Bauen des GoTo.Service Projekt in Produktionsmodus
 2. Bauen des GoTo.Client Projekts in Produktionsmodus
@@ -38,19 +63,27 @@ Das Deployment auf *Bean Stalk* erfolgt in folgenden Schritten:
 6. In ein ZIP-Archiv einpacken (Für AWS **muss** der Separator für Verzeichnisse gleich `/` sein, daher wird `zip` verwendet.)
 7. Deploy mithilfe von `eb deploy`
 
-# GoTo.Lambda
+## GoTo.Lambda
 
 GoTo.Lambda übernimmt die Benutzerführung des Alexa-Skills und stellt Abfragen an GoTo.Service um an Ortsinformationen zu gelangen oder um aktuelle Verbindungen zu ermitteln. 
 
-## Architektur
+### Architektur
 
-![Klassendiagram von *GoTo.Lambda*](goto-lambda-arch.png)
+```{=latex}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.75\linewidth]{goto-lambda-arch.png}
+    \caption{Klassendiagram von GoTo.Lambda}
+\end{figure}
+```
 
-## Anbindung an GoTo.Service
+`\pagebreak`{=latex}
+
+### Anbindung an GoTo.Service
 
 Die Anbindung erfolgt über simple HTTP-Anfragen, die intern aber nicht gecacht werden. Das heißt, dass die Anfragen von Orten immer neu ausgeführt werden. Der Host kann über die Properties eingestellt werden.
 
-# GoTo.Alexa
+## GoTo.Alexa
 
 GoTo.Alexa ist ein Custom Alexa Skill, der als Backend GoTo.Lambda verwendet. Es wird nur die Sprache Deutsch unterstützt.
 
@@ -60,7 +93,7 @@ Zum Behandeln von Fehlern werden intern Zähler verwendet, die in der Session ge
 
 Das Skill-Projekt wurde mithilfe der `ask`-CLI geclont.
 
-## Intents
+### Intents
 
 * TripSearchIntent
   * Slot `Source` (AMAZON.City)
@@ -68,19 +101,19 @@ Das Skill-Projekt wurde mithilfe der `ask`-CLI geclont.
 * SpecifyLocationIntent
   * Slot `Location` (AMAZON.City)
 
-## Permissions
+### Permissions
 
 * Location Services
   * Um den Startort zu ermitteln
   * Ist nicht unbedingt erforderlich, da der Benutzer auch den Startort selbst angeben kann
 
-# GoTo.Client
+## GoTo.Client
 
 GoTo.Client ist eine einfach-gehaltene Angular-App zum Hinzufügen der Mitfahrten. Beim Start werden aktuell angebotene Fahrten angezeigt und es kann über einen Button eine neue Fahrt angelegt werden. Für das Styling wurde *Bootstrap* verwendet im Kombination mit *ng-bootstrap* für eine bessere Integration mit Angular.
 
 Zum Abfragen des GoTo.Service wird ein von *swagger-codegen* generierter Client verwendet siehe hierfür Abschnitt Anbindung an GoTo.Service.
 
-## Architektur
+### Architektur
 
 ```{=latex}
 \begin{figure}[h!]
@@ -89,9 +122,7 @@ Zum Abfragen des GoTo.Service wird ein von *swagger-codegen* generierter Client 
 \end{figure}
 ```
 
-`\pagebreak`{=latex}
-
-## Anbindung an GoTo.Service
+### Anbindung an GoTo.Service
 
 Der GoTo.Service erzeugt beim Bauen eine swagger.json, aus der dann ein Client generiert werden kann. Um dies möglichs einfach zu machen, wird Docker benützt um *swagger-codegen* zu starten. Dies übernimmt das Skript `GoTo.Client/Update-ApiClient.ps1`.
 
