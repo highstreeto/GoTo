@@ -23,7 +23,7 @@ Ein Alexa-Skill dient als zentraler Punkt zur Abfrage von Mitfahremöglichkeiten
 
 # Implementierung
 
-Folgende Applikationen sind implementiert:
+Folgende Applikationen wurden implementiert:
 
 | Name         | Technologie | Kurzbeschreibung                                                        |
 | ------------ | ----------- | ----------------------------------------------------------------------- |
@@ -34,7 +34,9 @@ Folgende Applikationen sind implementiert:
 
 ## GoTo.Service
 
-Die zentrale Schnittselle von *GoTo* ist mithilfe von ASP.NET Core implementiert. Der Service wird auf *AWS Elastic Beanstalk* deployt als Docker-Container. Die Mitfahrten werden *In-Memory* gespeichert, da sie nur bis zur Startzeit gültig sind.
+Die zentrale Schnittselle von *GoTo* ist mithilfe von ASP.NET Core implementiert. Der Service wird auf *AWS Elastic Beanstalk* deployt als Docker-Container. Die Mitfahrten werden *In-Memory* gespeichert, da sie nur bis zur ihrer Startzeit gültig sind und danach nicht mehr gewählt werden können.
+
+Der Service stellt auch den GoTo.Client bereit und dieser ist unter `/` verfügbar. Die REST-Methoden sind unter `/api` verfügbar und die Swagger UI ist unter `/swagger` erreichbar.
 
 ### Architektur
 
