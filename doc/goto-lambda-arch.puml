@@ -1,7 +1,47 @@
 @startuml goto-lambda-arch
 
-interface ITripSearcher {
-    
+class Domain.Destination {
+    -string name
+    -double latitude
+    -double longitude
 }
+
+class Domain.Trip {
+    -DateTime startTime
+    -string startLocation
+    -DateTime endTime
+    -string endLocation
+    -string provider
+    +TimeSpan GetDuration()
+}
+Domain.Trip --> Domain.TripKind : -kind
+
+enum Domain.TripKind {
+    PublicTransport,
+    OfferedByUser
+}
+
+interface Services.ITripSearcher {
+    +{abstract} Task<IEnumerable<Destination>> FindDestinationByName(string name)
+    +{abstract} Task<IEnumerable<Destination>> FindDestinationByGeo(double lat, double lon)
+    +{abstract} Task<IEnumerable<Trip>> SearchForTripsAsync(string start, string end, DateTime time)
+}
+Services.ITripSearcher --> Domain.Destination : <<creates>>
+Services.ITripSearcher --> Domain.Trip : <<creates>>
+
+class Services.GoToTripSearcher {
+    -string host
+}
+Services.ITripSearcher <|.. Services.GoToTripSearcher
+
+class Services.TripSearcherFake {
+
+}
+Services.ITripSearcher <|.. Services.TripSearcherFake
+
+note bottom of Services.TripSearcherFake
+    Dient zum Testen der Lambda-Funktion,
+    ohne den GoTo.Service aufzurufen.
+end note
 
 @enduml

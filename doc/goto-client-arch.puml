@@ -1,11 +1,31 @@
 @startuml goto-client-arch
 
-interface ITripSearcher {
-    
+class Api.TripOfferService {
+    +Observable<TripOffer> add(TripOffer offer)
+    +Observable<Array<TripOffer>> query()
 }
 
-class WelcomeComponent {
+class Api.TripSearchService {
+    +Observable<Array<FoundTrip>> search(TripSearchParams searchParams)
+}
+
+class AppComponent {
     
 }
+AppComponent ..> WelcomeComponent : <<routes-to>>
+AppComponent ..> TripAddComponent : <<routes-to>>
+
+class WelcomeComponent {
+    -TripOffer[] currentTrips
+}
+WelcomeComponent --> Api.TripOfferService : -tripOfferService
+
+class TripAddComponent {
+    -FormGroup tripForm
+    -string serverError
+    -boolean submitting
+    -Router router
+}
+TripAddComponent --> Api.TripOfferService : -tripOfferService
 
 @enduml

@@ -1,7 +1,101 @@
 @startuml goto-service-arch
 
-class Destination {
+class Domain.Destination {
+    -string name
+    -double latitude
+    -double longitude
+    +double DistanceTo(Destination other)
+
+}
+
+abstract class Domain.Trip {
+    -DateTime startTime
+    -Destination startLocation
+    -TimeSpan estimatedDuration
+    -Destination endLocation
+
+    +DateTime GetEndTime()
+}
+
+class Domain.TripOffer {
+}
+Domain.Trip <|-- Domain.TripOffer
+Domain.TripOffer --> Domain.User : -offeredBy
+
+class Domain.PublicTransportTrip {
+    -string operator
+}
+Domain.Trip <|-- Domain.PublicTransportTrip
+Domain.PublicTransportTrip --> Domain.PublicTransportType : -type
+
+enum Domain.PublicTransportType {
+    Unspecified,
+    Bus,
+    Train,
+    Planem
+    Boat
+}
+
+class Domain.User {
+    -string loginName
+    -string displayName
+}
+
+interface Repositories.IDestinationRepository {
+    +{abstract} IEnumerable<Destination> Query()
+    +{abstract} IEnumerable<Destination> FindByName(string name)
+    +{abstract} Option<Destination> FindByGeo(double lat, double lon)
+    +{abstract} void Add(Destination destination)
+}
+Repositories.IDestinationRepository ..> Domain.Destination : <<persists>>
+
+class Repositories.InMemoryDestinationRepository {
+    -List<Destination> destinations
+}
+Repositories.IDestinationRepository <|.. Repositories.InMemoryDestinationRepository
+
+interface Repositories.ITripOfferRepository { 
+    +{abstract} IEnumerable<TripOffer> Query()
+    +{abstract} void Add(TripOffer offer)
+}
+Repositories.ITripOfferRepository ..> Domain.TripOffer : <<persists>>
+
+class Repositories.InMemoryTripOfferRepository {
+    -List<TripOffer> offers
+}
+Repositories.ITripOfferRepository <|.. Repositories.InMemoryTripOfferRepository
+
+interface Repositories.IUserRepository {
+    +{abstract} IEnumerable<User> Query()
+    +{abstract} User FindByLoginName(string loginName)
+    +{abstract} void Add(User user)
+}
+Repositories.IUserRepository ..> Domain.User : <<persists>>
+
+class Repositories.InMemoryUserRepository {
+    -List<User> users
+}
+Repositories.IUserRepository <|.. Repositories.InMemoryUserRepository
+
+interface Services.ITripSearcher {
+    +{abstract} Task<IEnumerable<Trip>> SearchAsync(TripSearchRequest request)
+}
+
+class Services.ExactMatchTripSearcher {
     
 }
+Services.ITripSearcher <|.. Services.ExactMatchTripSearcher
+Services.ExactMatchTripSearcher --> Repositories.InMemoryTripOfferRepository : -tripOfferRepo
+Services.ExactMatchTripSearcher --> "0..*" Services.IPublicTransportTripProvider : -publicTransportProviders
+
+interface Services.IPublicTransportTripProvider {
+    +{abstract} string GetOperator()
+    +{abstract} Task<IEnumerable<PublicTransportTrip>> SearchAsync(TripSearchRequest request)
+}
+
+class Services.OEBBPublicTransportTripProvider {
+
+}
+Services.IPublicTransportTripProvider <|.. Services.OEBBPublicTransportTripProvider
 
 @enduml

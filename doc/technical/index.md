@@ -4,15 +4,23 @@ author: Martin Hochstrasser
 date: 27.06.2019
 lang: de-DE
 toc: true
+colorlinks: true
 ---
 
 # GoTo.Service
 
-Die zentrale Schnittselle von *GoTo* ist mithilfe von ASP.NET Core implementiert. Der Service wird auf *AWS Elastic Beanstalk* deployt als Docker-Container. 
+Die zentrale Schnittselle von *GoTo* ist mithilfe von ASP.NET Core implementiert. Der Service wird auf *AWS Elastic Beanstalk* deployt als Docker-Container. Die Mitfahrten werden *In-Memory* gespeichert, da sie nur bis zur Startzeit gültig sind.
+
+`\pagebreak`{=latex}
 
 ## Architektur
 
-![Klassendiagram von *GoTo.Service*](goto-service-arch.png)
+```{=latex}
+\begin{figure}[h!]
+    \includegraphics{goto-service-arch.png}
+    \caption{Klassendiagram von GoTo.Service}
+\end{figure}
+```
 
 ## REST-Schnittstelle
 
@@ -20,7 +28,19 @@ Die zentrale Schnittselle von *GoTo* ist mithilfe von ASP.NET Core implementiert
 
 ## Deployment
 
+Das Deployment auf *Bean Stalk* erfolgt in folgenden Schritten:
+
+1. Bauen des GoTo.Service Projekt in Produktionsmodus
+2. Bauen des GoTo.Client Projekts in Produktionsmodus
+3. Kopiere GoTo.Service in `dist/app`
+4. Kopiere GoTo.Client in `dist/app/wwwroot`
+5. Füge einfaches Dockerfile zum Starten von GoTo.Serivce hinzu
+6. In ein ZIP-Archiv einpacken (Für AWS **muss** der Separator für Verzeichnisse gleich `/` sein, daher wird `zip` verwendet.)
+7. Deploy mithilfe von `eb deploy`
+
 # GoTo.Lambda
+
+GoTo.Lambda übernimmt die Benutzerführung des Alexa-Skills und stellt Abfragen an GoTo.Service um an Ortsinformationen zu gelangen oder um aktuelle Verbindungen zu ermitteln. 
 
 ## Architektur
 
@@ -28,25 +48,48 @@ Die zentrale Schnittselle von *GoTo* ist mithilfe von ASP.NET Core implementiert
 
 ## Anbindung an GoTo.Service
 
-Die Anbindung erfolgt über simple HTTP-Anfragen, die intern aber nicht gecacht werden.
+Die Anbindung erfolgt über simple HTTP-Anfragen, die intern aber nicht gecacht werden. Das heißt, dass die Anfragen von Orten immer neu ausgeführt werden. Der Host kann über die Properties eingestellt werden.
 
 # GoTo.Alexa
 
+GoTo.Alexa ist ein Custom Alexa Skill, der als Backend GoTo.Lambda verwendet. Es wird nur die Sprache Deutsch unterstützt.
+
+Um den Startort einfach bestimmen zu können, wird der Zugriff auf die *Location Services* benötigt. Sollte der Benutzer den Startort nicht angeben, werden sein akuteller Standort verwendet. Der Benutzer kann aber auch ohne diese Berechtigung den Skill benützen, in dem er den Startort explizit angibt ("Wie komme ich von Hagenberg nach Linz?").
+
+Zum Behandeln von Fehlern werden intern Zähler verwendet, die in der Session gespeichert werden. Sollte zum Beispiel das Abfragen eines Ortes 2-mal fehlschlagen, wird die Session abgebrochen und der Benutzer verständigt.
+
+Das Skill-Projekt wurde mithilfe der `ask`-CLI geclont.
+
 ## Intents
+
+* TripSearchIntent
+  * Slot `Source` (AMAZON.City)
+  * Slot `Destination` (AMAZON.City)
+* SpecifyLocationIntent
+  * Slot `Location` (AMAZON.City)
 
 ## Permissions
 
+* Location Services
+  * Um den Startort zu ermitteln
+  * Ist nicht unbedingt erforderlich, da der Benutzer auch den Startort selbst angeben kann
+
 # GoTo.Client
 
-Angular
+GoTo.Client ist eine einfach-gehaltene Angular-App zum Hinzufügen der Mitfahrten. Beim Start werden aktuell angebotene Fahrten angezeigt und es kann über einen Button eine neue Fahrt angelegt werden. Für das Styling wurde *Bootstrap* verwendet im Kombination mit *ng-bootstrap* für eine bessere Integration mit Angular.
 
-Boostrap
-
-ng-boostrap
+Zum Abfragen des GoTo.Service wird ein von *swagger-codegen* generierter Client verwendet siehe hierfür Abschnitt Anbindung an GoTo.Service.
 
 ## Architektur
 
-![Klassendiagram von *GoTo.Client*](goto-client-arch.png)
+```{=latex}
+\begin{figure}[h!]
+    \includegraphics[width=0.8\linewidth]{goto-client-arch.png}
+    \caption{Klassendiagram von GoTo.Client}
+\end{figure}
+```
+
+`\pagebreak`{=latex}
 
 ## Anbindung an GoTo.Service
 
